@@ -2,7 +2,7 @@
  * 脚本地址: https://raw.githubusercontent.com/yml2213/javascript/master/gqcq/gqcq.js
  * 转载请留信息,谢谢
  *
- * 广汽传祺  app 
+ * 广汽传祺  app
  *
  * cron 30 6 * * *  yml2213_javascript_master/gqcq.js
  *
