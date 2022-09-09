@@ -2,6 +2,7 @@
 青龙脚本公共库
 =====================
 拉库命令
+
 ql repo https://github.com/zhaoshicong/QLScriptPublic.git
 =====================
 青碳行.js -> 添加成功
