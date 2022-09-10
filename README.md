@@ -30,3 +30,8 @@ ql repo https://github.com/zhaoshicong/QLScriptPublic.git
 广汽三菱 -> 添加成功
 
 ============2022/09/09
+喜马拉雅 
+
+Xbox聚乐部
+
+============2022/9/10
