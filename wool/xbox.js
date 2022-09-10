@@ -145,8 +145,8 @@
  
  // 如果有更多的需求，直接复制上一个函数，改个名   然后稍微更改一下内容   就可以用了   
  // 不要忘记与上面的 函数调用对应起来鸭
- 
-  function jifen(timeout = 3 * 1000) {
+ //积分查询-------------------
+  function jifen(timeout = 5 * 1000) {
      return new Promise((resolve) => {
          let url = {
              url: `https://h5.youzan.com/wscump/pointstore/getCustomerPoints.json`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
