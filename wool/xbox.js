@@ -10,7 +10,7 @@
  * 项目测试:小鹿
  * ========= 青龙 =========
  * 变量格式：export xboxtoken=' extra_data中的sid '  多个账号用 @分割 
- * 当前变量测试 extra_data中的sid
+ * 当前变量测试 extra_data中的sid  该参数:进入小程序后点击授权后开启抓包 随意进入一个页面抓链接h5.youzan.com中的请求体中的sid参数
  */
 
  const xbox = "xbox俱乐部";
@@ -64,11 +64,11 @@
              // 	2. 函数的名字不可以相同
              //      3. 不够可以自己复制
  
-             console.log('开始 xx');
+             console.log('开始 做签到任务');
              await signin();
              await $.wait(2 * 1000);
 
-             console.log('开始 xx');
+             console.log('开始 查询积分');
              await jifen();
              await $.wait(2 * 1000);
  
