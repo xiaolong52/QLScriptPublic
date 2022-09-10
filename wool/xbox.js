@@ -70,7 +70,7 @@
 
              console.log('开始 查询积分');
              await jifen();
-             await $.wait(3 * 1000);
+             await $.wait(5 * 1000);
  
  
  
