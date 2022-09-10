@@ -52,7 +52,7 @@
              let num = index + 1
              console.log(`\n========= 开始【第 ${num} 个账号】=========\n`)
  
-             data = xboxtokenArr[index].split('&');      // 这里是分割你每个账号的每个小项   
+             xboxtoken = xboxtokenArr[index].split('&');      // 这里是分割你每个账号的每个小项   
  
              if (debug) {
                  console.log(`\n 【debug】 这是你第 ${num} 账号信息:\n ${data}\n`);
@@ -99,7 +99,7 @@
              headers: {            // headers 是请求体  可以直接用精简后的 hd  也就是服务器校验的部分，他需要啥，我们就给他啥  
                  "Host": "h5.youzan.com",
                  "User-Agent": "Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4297 MMWEBSDK/20220505 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.23.2160(0x28001757) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
-                 "extra-data": "{\"is_weapp\":1,\"sid\":\"" + xboxtoken + "\",\"version\":\"2.101.7.101\",\"client\":\"weapp\",\"bizEnv\":\"wsc\",\"uuid\":\"bKKNEEesAb1knjP1662723508264\",\"ftime\":1662723508264}"
+                 "extra-data": "{\"is_weapp\":1,\"sid\":\"" + xboxtoken[0] + "\",\"version\":\"2.101.7.101\",\"client\":\"weapp\",\"bizEnv\":\"wsc\",\"uuid\":\"bKKNEEesAb1knjP1662723508264\",\"ftime\":1662723508264}"
              },
              // body: '',       // 这是一个 get 请求，没有请求体 body   如果是 post 不要忘记他鸭！
  
@@ -153,7 +153,7 @@
              headers: {            // headers 是请求体  可以直接用精简后的 hd  也就是服务器校验的部分，他需要啥，我们就给他啥  
                  "Host": "h5.youzan.com",
                  "User-Agent": "Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4297 MMWEBSDK/20220505 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.23.2160(0x28001757) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
-                 "Cookie": "KDTWEAPPSESSIONID=" + xboxtoken + ";_kdt_id_=100464643"
+                 "Cookie": "KDTWEAPPSESSIONID=" + xboxtoken[0] + ";_kdt_id_=100464643"
              },
              //body:  // 这是一个 get 请求，没有请求体 body   如果是 post 不要忘记他鸭！
  
