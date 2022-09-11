@@ -109,18 +109,14 @@
    async function jifen() {
 	try {
 		let url = {
-			url: `${hostname}/ghy/wxclient/member/point_records:search`,
+			url: `${hostname}/wscump/pointstore/getCustomerPoints.json`,
 			headers: {
 				"Host": host,
-				"Content-Type": "application/json;charset\u003dUTF-8",
+				"User-Agent": "Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4297 MMWEBSDK/20220505 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.23.2160(0x28001757) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
 				"access-token": ck[0],
-			},
-			body: JSON.stringify({
-				"pageIndex": 1,
-				"pageSize": 30
-			  })
+			}
 		};
-		let result = await httpPost(url, `查询积分`);
+		let result = await httpGet(url, `查询积分`);
 
 		console.log(result);
 		if (result?.code == 200) {
