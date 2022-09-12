@@ -1,24 +1,24 @@
 /**
  *
- * x俱乐部  小程序
+ * 长安深蓝  APP
  *
- * cron 0 0,7 * * *  xbox.js
+ * cron 0 0,7 * * *  casl.js
  *
- * 9-5		签到兑换实物
+ * 9-12		签到兑换实物
  *
  * ========= 青龙--配置文件 =========
- * 变量格式: export xbox_data=' extra-data '   ,多账号用 换行 或 @ 分割
- * 抓h5.youzan.com下请求中 extra-data 的值填入变量
+ * 变量格式: export casl_data='  '   ,多账号用 换行 或 @ 分割
+ * 抓https://app-api.deepal.com.cn下请求中 casl_data 的值填入变量
  */
 
  const { log } = require("console");
 
- const $ = new Env("x俱乐部");
+ const $ = new Env("长安深蓝");
  const notify = $.isNode() ? require("./sendNotify") : "";
  const Notify = 1 		//0为关闭通知,1为打开通知,默认为1
  const debug = 0			//0为关闭调试,1为打开调试,默认为0
  //---------------------------------------------------------------------------------------------------------
- let ckStr = ($.isNode() ? process.env.xbox_data : $.getdata('xbox_data')) || '';
+ let ckStr = ($.isNode() ? process.env.casl_data : $.getdata('casl_data')) || '';
  let msg, ck;
  let ck_status = true;
  let host = 'app-api.deepal.com.cn';
@@ -27,7 +27,7 @@
  ram_num = randomInt(1, 4)
  let text = textArr[ram_num];
  //---------------------------------------------------------------------------------------------------------
- let Change = '每天签到 ,兑换实物'
+ let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 出现BUG请及时联系作者小鹿'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
@@ -42,7 +42,7 @@
  
  
  !(async () => {
-	 let ckArr = await checkEnv(ckStr, "xbox_data");
+	 let ckArr = await checkEnv(ckStr, "casl_data");
 	 await tips(ckArr);
 	 for (let index = 0; index < ckArr.length; index++) {
 		 let num = index + 1;
