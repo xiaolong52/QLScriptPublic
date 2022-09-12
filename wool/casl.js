@@ -27,12 +27,12 @@
  ram_num = randomInt(0, 4)
  let text = textArr[ram_num];
  //---------------------------------------------------------------------------------------------------------
- let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 出现BUG请及时联系作者小鹿 v0.0.2更新内容为动态文章ID'
+ let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 \n 出现BUG请及时联系作者小鹿 v0.0.2更新内容为动态文章ID \n 更新优化视觉，详细返回信息'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {
-	 let Version = `\n📌 本地脚本: V 0.0.2 `
+	 let Version = `\n📌 本地脚本: V 0.0.3 `
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
 	 // DoubleLog(`${thank}`);
 	 await wyy();
@@ -291,7 +291,7 @@
 		console.log(result);
 		if (result?.code == 200) {
 			if  (result.data == true){
-				console.log("点赞执行成功");
+				console.log("🎉恭喜，点赞执行成功🎉");
 			} else {
 				console.log("点赞执行失败");
 			}
@@ -322,7 +322,7 @@ async function liulan() {
 		console.log(result);
 		if (result?.code == 200) {
 			if  (result.data == true){
-				console.log("点赞执行成功");
+				console.log("🎉恭喜，点赞执行成功🎉");
 			} else {
 				console.log("点赞执行失败");
 			}
@@ -355,10 +355,10 @@ async function pinglun() {
 
 	//	console.log(result);
 		if (result?.code == 200) {
-				console.log("评论执行成功");
+				console.log("🎉恭喜，评论执行成功🎉");
 				await wait(3);           //DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 			} else {
-			DoubleLog(`评论: 失败 ❌ 了呢,原因未知!`);
+			DoubleLog(`评论: 失败 ❌ 了呢,原因未知!可能因为该文章已经评论重复的内容，下面将输出返回data`);
 			console.log(result);
 		}
 	} catch (error) {
@@ -382,12 +382,12 @@ async function dianzan() {
 		//console.log(result);
 		if (result?.code == 200) {
 			
-				console.log("点赞执行成功");
+				console.log("🎉恭喜，点赞执行成功🎉");
 			
 			}
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 		 else {
-			DoubleLog(`点赞: 失败 ❌ 了呢,原因未知!`);
+			DoubleLog(`点赞: 失败 ❌ 了呢,原因未知!，可能因为此片文章已被点赞过，下面输出返回data`);
 			console.log(result);
 		}
 	} catch (error) {
@@ -410,11 +410,11 @@ async function shoucang() {
 
 		//console.log(result);
 		if (result?.code == 200) {
-				console.log("收藏执行成功");
+				console.log("🎉恭喜，收藏执行成功🎉");
 			} 
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 			 else {
-			DoubleLog(`收藏: 失败 ❌ 了呢,原因未知!`);
+			DoubleLog(`收藏: 失败 ❌ 了呢,原因未知!，可能因为此篇文章已被收藏过，下面输出返回data`);
 			console.log(result);
 		}
 	} catch (error) {
@@ -437,11 +437,11 @@ async function fenxiang() {
 
 		//console.log(result);
 		if (result?.code == 200) {
-			console.log("分享执行成功");
+			console.log("🎉恭喜，分享执行成功🎉");
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 			await wait(3);
 		} else {
-			DoubleLog(`分享: 失败 ❌ 了呢,原因未知!`);
+			DoubleLog(`分享: 失败 ❌ 了呢,原因未知!，可能出现错误，也可能出现重复分享呢`);
 			console.log(result);
 		}
 	} catch (error) {
