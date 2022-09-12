@@ -27,12 +27,12 @@
  ram_num = randomInt(0, 4)
  let text = textArr[ram_num];
  //---------------------------------------------------------------------------------------------------------
- let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 \n 出现BUG请及时联系作者小鹿 v0.0.2更新内容为动态文章ID \n 更新优化视觉，详细返回信息'
+ let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 \n 出现BUG请及时联系作者小鹿 \n v0.0.2更新内容为动态文章ID \n v0.0.3新优化视觉，详细返回信息 \n v0.0.4更新资讯文章任务'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {
-	 let Version = `\n📌 本地脚本: V 0.0.3 `
+	 let Version = `\n📌 本地脚本: V 0.0.4 `
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
 	 // DoubleLog(`${thank}`);
 	 await wyy();
@@ -64,8 +64,12 @@
 	 await user();
 	 await $.wait(4 * 1000);
 
-	 console.log("\n 开始 获取文章ID");
-	 await articleID();
+	 console.log("\n 开始 获取资讯文章ID");
+	 await articleID1();
+	 await $.wait(4 * 1000);
+
+	 console.log("\n 开始 获取动态文章ID");
+	 await articleID2();
 	 await $.wait(4 * 1000);
 
 	 console.log("\n开始 获取任务列表");
@@ -170,24 +174,24 @@
 					break;
 					//await qiandao;
 					case "BC00001":
-					console.log("开始执行浏览");
+					console.log("开始执行浏览资讯");
 					break;
 					// await liulan;
 					case "BS00001":
-					console.log("开始执行评论");
-					await pinglun();
+					console.log("开始执行评论资讯");
+					await pinglun1();
 					break;
 					case "BC00002":
-					console.log("开始执行点赞");
-					await dianzan();
+					console.log("开始执行点赞资讯");
+					await dianzan1();
 					break;
 					case "BC00003":
-					console.log("开始执行收藏");
-					await shoucang();
+					console.log("开始执行收藏资讯");
+					await shoucang1();
 					break;
 					case "BS00002":
-					console.log("开始执行分享");
-					await fenxiang();
+					console.log("开始执行分享资讯");
+					await fenxiang1();
 					break;
 					case "BS0010":
 					console.log("开始执行精选评论");
@@ -197,15 +201,19 @@
 					break;
 					case "BS00008":
 					console.log("开始执行评论动态");
+					await pinglun2();
 					break;
 					case "BC00006":
 					console.log("开始执行点赞动态");
+					await dianzan2();
 					break;
 					case "BC00007":
 					console.log("开始执行收藏动态");
+					await shoucang2();
 					break;
 					case "BS00009":
 					console.log("开始执行分享动态");
+					await fenxiang2();
 					break;
 					case "BS00012":
 					console.log("开始执行动态精选评论");
@@ -237,8 +245,44 @@
 	 }
  
  }
- //------------------------------远程获取文章ID POST
- async function articleID() {
+ //------------------------------远程获取咨询文章ID POST
+ async function articleID1() {
+	try {
+		let url = {
+			url: `${hostname}/appapi/v1/m_app/article/query`,
+			headers: {
+				"Host": host,
+				"authorization": ck[0],
+				"appType": "android",
+				"Content-Type": "application/json; charset=UTF-8",
+				"Content-Length": 66
+			},
+			body: "{\"body\":{\"isRecommend\":1},\"index\":1,\"lastId\":\"0\",\"size\":10}"
+		};
+		let result = await httpPost(url, `执行获取资讯文章`);
+
+		//console.log(result);
+		if (result?.code == 200) {
+				console.log("获取资讯文章ID成功🎉");
+				//console.log(result.data[0].commentList[0].articleId);
+			} else {
+				console.log("获取资讯文章ID失败");
+			}
+			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
+			ram_num2 = randomInt(0,9)
+			ram_num3 = randomInt(0,1)
+			articleId1 = result.data[ram_num2].commentList[ram_num3].articleId;
+			await wait(1);
+			memberId1 = result.data[ram_num2].memberId
+		console.log("当前获取资讯文章ID为" + articleId1 + "\n资讯文章匹配数字ID为" + memberId1);
+		
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+//-------------------获取动态文章ID----------POST
+async function articleID2() {
 	try {
 		let url = {
 			url: `${hostname}/appapi/v1/m_app/article/query`,
@@ -251,22 +295,22 @@
 			},
 			body: "{\"body\":{\"authorType\":2,\"type\":4},\"index\":2,\"lastId\":\"\",\"size\":10}"
 		};
-		let result = await httpPost(url, `执行获取文章`);
+		let result = await httpPost(url, `执行获取动态文章`);
 
 		//console.log(result);
 		if (result?.code == 200) {
-			
+			   console.log("获取动态文章ID成功🎉");
 				//console.log(result.data[0].commentList[0].articleId);
 			} else {
-				console.log("获取文章ID失败");
+				console.log("获取动态文章ID失败");
 			}
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
-			ram_num2 = randomInt(0,9)
-			ram_num3 = randomInt(0,1)
-			articleId = result.data[ram_num2].commentList[ram_num3].articleId;
+			ram_num22 = randomInt(0,9)
+			ram_num33 = randomInt(0,1)
+			articleId2 = result.data[ram_num22].commentList[ram_num33].articleId;
 			await wait(1);
-			memberId = result.data[ram_num2].memberId
-		console.log("当前获取文章ID为" + articleId + "文章匹配数字ID为" + memberId);
+			memberId2 = result.data[ram_num22].memberId
+		console.log("当前获取动态文章ID为" + articleId2 + "\n动态文章匹配数字ID为" + memberId2);
 		
 	} catch (error) {
 		console.log(error);
@@ -337,8 +381,8 @@ async function liulan() {
 	}
 
 }
- //------------------------------------评论---------POST-----------
-async function pinglun() {
+ //------------------------------------评论资讯---------POST-----------
+async function pinglun1() {
 	try {
 		let url = {
 			url: `${hostname}/appapi/v1/m_app/comment`,
@@ -349,16 +393,16 @@ async function pinglun() {
 				"Content-Type": "application/json; charset=UTF-8",
 				"Content-Length": 431
 			},
-			body: "{\"content\":\""+ `${text}` + "\",\"memberName\":\"深蓝2734\",\"articleId\":\"" + articleId + "\",\"memberFace\":\"https:\\/\\/files.deepal.com.cn\\/face_1568956164091478017_1662903514374.png\",\"memberId\":\"" + memberId + "\",\"authorType\":\"1\",\"quoteMemberName\":\"长安深蓝\",\"quoteMemberFace\":\"https:\\/\\/files.deepal.com.cn\\/member\\/head-portrait\\/6c599d214601820c01dedcffcb2a3be2.jpg\"}",
+			body: "{\"content\":\""+ `${text}` + "\",\"memberName\":\"深蓝2734\",\"articleId\":\"" + articleId1 + "\",\"memberFace\":\"https:\\/\\/files.deepal.com.cn\\/face_1568956164091478017_1662903514374.png\",\"memberId\":\"" + memberId1 + "\",\"authorType\":\"1\",\"quoteMemberName\":\"长安深蓝\",\"quoteMemberFace\":\"https:\\/\\/files.deepal.com.cn\\/member\\/head-portrait\\/6c599d214601820c01dedcffcb2a3be2.jpg\"}",
 		};
-		let result = await httpPost(url, `执行评论`);
+		let result = await httpPost(url, `执行评论资讯`);
 
 	//	console.log(result);
 		if (result?.code == 200) {
-				console.log("🎉恭喜，评论执行成功🎉");
+				console.log("🎉恭喜，评论资讯执行成功🎉");
 				await wait(3);           //DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 			} else {
-			DoubleLog(`评论: 失败 ❌ 了呢,原因未知!可能因为该文章已经评论重复的内容，下面将输出返回data`);
+			DoubleLog(`评论: 失败 ❌ 了呢,原因未知!可能因为该资讯文章已经评论重复的内容，下面将输出返回data`);
 			console.log(result);
 		}
 	} catch (error) {
@@ -366,28 +410,28 @@ async function pinglun() {
 	}
 
 }
- //-------------------点赞--------
-async function dianzan() {
+ //-------------------点赞资讯--------
+async function dianzan1() {
 	try {
 		let url = {
-			url: `${hostname}/appapi/v1/m_app/article/` + articleId + `/praises`,
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId1 + `/praises`,
 			headers: {
 				"Host": host,
 				"authorization": ck[0],
 				"appType": "android",
 			},
 		};
-		let result = await httpPost(url, `执行点赞`);
+		let result = await httpPost(url, `执行点赞资讯`);
 
 		//console.log(result);
 		if (result?.code == 200) {
 			
-				console.log("🎉恭喜，点赞执行成功🎉");
+				console.log("🎉恭喜，点赞资讯执行成功🎉");
 			
 			}
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 		 else {
-			DoubleLog(`点赞: 失败 ❌ 了呢,原因未知!，可能因为此片文章已被点赞过，下面输出返回data`);
+			DoubleLog(`点赞: 失败 ❌ 了呢,原因未知!，可能因为此篇资讯文章已被点赞过，下面输出返回data`);
 			console.log(result);
 		}
 	} catch (error) {
@@ -396,25 +440,25 @@ async function dianzan() {
 
 }
  //--------------------------------------收藏
-async function shoucang() {
+async function shoucang1() {
 	try {
 		let url = {
-			url: `${hostname}/appapi/v1/m_app/article/` + articleId + `/like`,
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId1 + `/like`,
 			headers: {
 				"Host": host,
 				"authorization": ck[0],
 				"appType": "android",
 			},
 		};
-		let result = await httpPost(url, `执行收藏`);
+		let result = await httpPost(url, `执行收藏资讯`);
 
 		//console.log(result);
 		if (result?.code == 200) {
-				console.log("🎉恭喜，收藏执行成功🎉");
+				console.log("🎉恭喜，收藏资讯执行成功🎉");
 			} 
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 			 else {
-			DoubleLog(`收藏: 失败 ❌ 了呢,原因未知!，可能因为此篇文章已被收藏过，下面输出返回data`);
+			DoubleLog(`收藏: 失败 ❌ 了呢,原因未知!，可能因为此篇资讯文章已被收藏过，下面输出返回data`);
 			console.log(result);
 		}
 	} catch (error) {
@@ -423,21 +467,21 @@ async function shoucang() {
 
 }
  //-----------------------------------分享POST
-async function fenxiang() {
+async function fenxiang1() {
 	try {
 		let url = {
-			url: `${hostname}/appapi/v1/m_app/article/` + articleId + `/share`,
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId1 + `/share`,
 			headers: {
 				"Host": host,
 				"authorization": ck[0],
 				"appType": "android",
 			},
 		};
-		let result = await httpPost(url, `执行分享`);
+		let result = await httpPost(url, `执行分享资讯`);
 
 		//console.log(result);
 		if (result?.code == 200) {
-			console.log("🎉恭喜，分享执行成功🎉");
+			console.log("🎉恭喜，分享资讯执行成功🎉");
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
 			await wait(3);
 		} else {
@@ -450,6 +494,149 @@ async function fenxiang() {
 
 }
  
+  //------------------浏览动态-----
+async function liulan2() {
+	try {
+		let url = {
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId + `/praises/`,
+			headers: {
+				"Host": host,
+				"authorization": ck[0],
+				"appType": "android",
+			},
+		};
+		let result = await httpPost(url, `执行点赞`);
+
+		console.log(result);
+		if (result?.code == 200) {
+			if  (result.data == true){
+				console.log("🎉恭喜，点赞执行成功🎉");
+			} else {
+				console.log("点赞执行失败");
+			}
+			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
+			await wait(3);
+		} else {
+			DoubleLog(`点赞: 失败 ❌ 了呢,原因未知!`);
+			console.log(result);
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+ //------------------------------------评论动态---------POST-----------
+async function pinglun2() {
+	try {
+		let url = {
+			url: `${hostname}/appapi/v1/m_app/comment`,
+			headers: {
+				"Host": host,
+				"authorization": ck[0],
+				"appType": "android",
+				"Content-Type": "application/json; charset=UTF-8",
+				"Content-Length": 431
+			},
+			body: "{\"content\":\""+ `${text}` + "\",\"memberName\":\"深蓝2734\",\"articleId\":\"" + articleId2 + "\",\"memberFace\":\"https:\\/\\/files.deepal.com.cn\\/face_1568956164091478017_1662903514374.png\",\"memberId\":\"" + memberId2 + "\",\"authorType\":\"1\",\"quoteMemberName\":\"长安深蓝\",\"quoteMemberFace\":\"https:\\/\\/files.deepal.com.cn\\/member\\/head-portrait\\/6c599d214601820c01dedcffcb2a3be2.jpg\"}",
+		};
+		let result = await httpPost(url, `执行评论动态`);
+
+	//	console.log(result);
+		if (result?.code == 200) {
+				console.log("🎉恭喜，评论动态执行成功🎉");
+				await wait(3);           //DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
+			} else {
+			DoubleLog(`评论: 失败 ❌ 了呢,原因未知!可能因为该动态文章已经评论重复的内容，下面将输出返回data`);
+			console.log(result);
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+ //-------------------点赞动态--------
+async function dianzan2() {
+	try {
+		let url = {
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId2 + `/praises`,
+			headers: {
+				"Host": host,
+				"authorization": ck[0],
+				"appType": "android",
+			},
+		};
+		let result = await httpPost(url, `执行点赞动态`);
+
+		//console.log(result);
+		if (result?.code == 200) {
+			
+				console.log("🎉恭喜，点赞动态执行成功🎉");
+			
+			}
+			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
+		 else {
+			DoubleLog(`点赞: 失败 ❌ 了呢,原因未知!，可能因为此篇动态文章已被点赞过，下面输出返回data`);
+			console.log(result);
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+ //--------------------------------------收藏动态
+async function shoucang2() {
+	try {
+		let url = {
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId2 + `/like`,
+			headers: {
+				"Host": host,
+				"authorization": ck[0],
+				"appType": "android",
+			},
+		};
+		let result = await httpPost(url, `执行收藏动态`);
+
+		//console.log(result);
+		if (result?.code == 200) {
+				console.log("🎉恭喜，收藏动态执行成功🎉");
+			} 
+			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
+			 else {
+			DoubleLog(`收藏: 失败 ❌ 了呢,原因未知!，可能因为此篇动态文章已被收藏过，下面输出返回data`);
+			console.log(result);
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+ //-----------------------------------分享POST
+async function fenxiang2() {
+	try {
+		let url = {
+			url: `${hostname}/appapi/v1/m_app/article/` + articleId2 + `/share`,
+			headers: {
+				"Host": host,
+				"authorization": ck[0],
+				"appType": "android",
+			},
+		};
+		let result = await httpPost(url, `执行分享动态`);
+
+		//console.log(result);
+		if (result?.code == 200) {
+			console.log("🎉恭喜，分享动态执行成功🎉");
+			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
+			await wait(3);
+		} else {
+			DoubleLog(`分享: 失败 ❌ 了呢,原因未知!，可能出现错误，也可能出现重复分享呢`);
+			console.log(result);
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+}
  
  
  
