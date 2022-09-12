@@ -24,15 +24,15 @@
  let host = 'app-api.deepal.com.cn';
  let hostname = 'https://' + host;
  let textArr = ['长安的车还是不错的','试驾了感觉还行','车型挺多的还不错','在哪里试驾','长安的油耗高吗']
- ram_num = randomInt(1, 4)
+ ram_num = randomInt(0, 4)
  let text = textArr[ram_num];
  //---------------------------------------------------------------------------------------------------------
- let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 出现BUG请及时联系作者小鹿'
+ let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 出现BUG请及时联系作者小鹿 v0.0.2更新内容为动态文章ID'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {
-	 let Version = `\n📌 本地脚本: V 0.0.1 `
+	 let Version = `\n📌 本地脚本: V 0.0.2 `
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
 	 // DoubleLog(`${thank}`);
 	 await wyy();
@@ -261,9 +261,11 @@
 				console.log("获取文章ID失败");
 			}
 			//DoubleLog(`查询积分:${result?.chnDesc} 🎉,当前积分:${result?.recordList.pointValueAfterChange} `);
-			articleId = result.data[0].commentList[0].articleId;
+			ram_num2 = randomInt(0,9)
+			ram_num3 = randomInt(0,1)
+			articleId = result.data[ram_num2].commentList[ram_num3].articleId;
 			await wait(1);
-			memberId = result.data[0].memberId
+			memberId = result.data[ram_num2].memberId
 		console.log("当前获取文章ID为" + articleId + "文章匹配数字ID为" + memberId);
 		
 	} catch (error) {
