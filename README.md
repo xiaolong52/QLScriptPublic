@@ -35,3 +35,7 @@ ql repo https://github.com/zhaoshicong/QLScriptPublic.git
 Xbox聚乐部
 
 ============2022/9/10
+
+长安深蓝
+
+============2022/9/12
