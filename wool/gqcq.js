@@ -11,6 +11,7 @@
  * 5-21     	更新通知,优化代码
  * 6-10		更新模板,修改部分逻辑!
  * 9-10     更新模板,优化逻辑~（小鹿）
+ * 9-13     取消抽奖 ——（LU）
  * 感谢所有测试人员
  * ========= 青龙--配置文件 =========
  * 变量格式: export gqcq_data='token @ token'  多个账号用 换行 或 @分割
@@ -160,7 +161,6 @@ async function task_list() {
         if (result.data[0].finishedNum == 0) {
             DoubleLog(`签到状态： 未签到，去执行签到 ,顺便抽个奖`);
             await signin();
-            await lottery();
         } else if (result.data[0].finishedNum == 1) {
             DoubleLog(`签到状态：今天已经签到过了鸭，明天再来吧！`);
         } else {
