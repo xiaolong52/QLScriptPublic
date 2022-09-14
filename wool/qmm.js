@@ -9,7 +9,7 @@
  *
  * ========= 青龙--配置文件 =========
  * 变量格式: export qmm_data=''   ,多账号用 换行 或 @ 分割
- * 抓h5.youzan.com下请求中 app.quanmama.com 请求中的cookie的值中的serverid=后的 一大串 和 请求 body中的 usertoken=后的一大串填入变量
+ * 抓h5.youzan.com下请求中 app.quanmama.com 请求中的cookie的值中的serverid=后的 一大串 和 请求 body中的 usertoken=后的一大串填入变量 用&链接
  */
 
  const { log } = require("console");
