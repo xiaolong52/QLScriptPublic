@@ -58,7 +58,7 @@ async function tips(ckArr) {
     // console.log(thank);
     // msg += `${thank}`
 
-    //await wyy(); 网易云API接口 失效则无法正常运行
+    //await wyy(); //网易云API接口 失效则无法正常运行
     console.log(`\n================= 共找到 ${ckArr.length} 个账号 =================`);
     msg += `\n================= 共找到 ${ckArr.length} 个账号 =================`
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
