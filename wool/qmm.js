@@ -42,7 +42,7 @@
  
  !(async () => {
 	 let ckArr = await checkEnv(ckStr, "qmm_data");
-     if (ckStr.indexOf("&") !== -1) {
+     if (ckStr.indexOf("&") !== -1) {  //判断变量是否含有&，-1为不包含
         console.log("你的变量正常且正确");
         await tips(ckArr);
         for (let index = 0; index < ckArr.length; index++) {
