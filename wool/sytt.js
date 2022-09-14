@@ -50,7 +50,7 @@ async function tips(ckArr) {
     console.log(`==================================================\n 脚本执行 - 北京时间(UTC+8): ${new Date(
         new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000
     ).toLocaleString()} \n==================================================`);
-    await wyy();
+    //await wyy();  //网易云API接口 失效则无法正常运行
 
     console.log(`\n=================== 共找到 ${ckArr.length} 个账号 ===================`);
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
