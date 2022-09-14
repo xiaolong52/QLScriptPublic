@@ -36,7 +36,7 @@
 	 let Version = `\n📌 本地脚本: V 0.0.4 `
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
 	 // DoubleLog(`${thank}`);
-	 await wyy();
+	 //await wyy();  网易云API 查询 失效则不能正常运行
 	 DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
 	 debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
  }
