@@ -9,7 +9,7 @@
  *
  * ========= 青龙--配置文件 =========
  * 变量格式: export qmm_data=''   ,多账号用 换行 或 @ 分割
- * 抓h5.youzan.com下请求中 app.quanmama.com 请求中的cookie的值中的serverid=后的 一大串 和 请求 body中的 usertoken=后的一大串填入变量 用&链接
+ * 抓h5.youzan.com下请求中 app.quanmama.com 请求中的cookie的值中的serverid=一大串 和 请求 body中的 usertoken=一大串填入变量
  */
 
  const { log } = require("console");
@@ -42,14 +42,19 @@
  
  !(async () => {
 	 let ckArr = await checkEnv(ckStr, "qmm_data");
-	 await tips(ckArr);
-	 for (let index = 0; index < ckArr.length; index++) {
-		 let num = index + 1;
-		 DoubleLog(`\n-------- 开始【第 ${num} 个账号】--------`);
-		 ck = ckArr[index].split("&");             //账号分隔符,如果该账号有多个参数,且独立,则可以为CK[0],CK[1].都为同一账号.用&分割
-		 debugLog(`【debug】 这是你第 ${num} 账号信息:\n ${ck}`);
-		 await start();
-	 }
+     if (ckStr.indexOf("&") !== -1) {
+        console.log("你的变量正常且正确");
+        await tips(ckArr);
+        for (let index = 0; index < ckArr.length; index++) {
+            let num = index + 1;
+            DoubleLog(`\n-------- 开始【第 ${num} 个账号】--------`);
+            ck = ckArr[index].split("&");             //账号分隔符,如果该账号有多个参数,且独立,则可以为CK[0],CK[1].都为同一账号.用&分割
+            debugLog(`【debug】 这是你第 ${num} 账号信息:\n ${ck}`);
+            await start();
+        }
+     } else {
+        console.log("你的变量不对哦~缺少了某个东西,该脚本参数为2个");
+     }
 	 await SendMsg(msg);
  
  })()
