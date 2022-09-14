@@ -55,7 +55,7 @@ let choose_gold_num = 1;
 			).toLocaleString()} =========================================\n`);
 
 
-		await wyy();
+		//await wyy(); 网易云API接口 失效则无法运行
 		await $.wait(2 * 1000);
 
 
