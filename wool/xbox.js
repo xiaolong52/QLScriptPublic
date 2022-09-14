@@ -37,7 +37,7 @@
              new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 +
              8 * 60 * 60 * 1000).toLocaleString()} \n=========================================\n`);
  
-         //await wyy(); 网易云API接口 失效则不能正常运行 
+         //await wyy(); //网易云API接口 失效则不能正常运行 
  
          console.log(`\n=================== 共找到 ${xboxtokenArr.length} 个账号 ===================`)
  
