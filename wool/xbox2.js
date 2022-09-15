@@ -25,12 +25,14 @@
  let hostname = 'https://' + host;
  let githubproxy = "https://gh.api.99988866.xyz/"
  //---------------------------------------------------------------------------------------------------------
+ let Version_Check = "0.0.1"
  let Change = '每天签到 ,兑换实物'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {
-	 let Version = `\n📌 本地脚本: V 0.0.1 `
+	let Version_latest = await Version_Check('xbox2');
+	let Version = `\n📌 本地脚本: V 0.1.0  远程仓库脚本: V ${Version_latest}`
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
 	 // DoubleLog(`${thank}`);
 	 //await wyy();  //网易云API 查询 失效则不能运行
@@ -194,6 +196,26 @@
 	 )
  }
  
+//检测版本------------------------------
+async function Version_check(name) {
+	try {
+		let url = {
+			url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js`,
+		};
+		let result = await httpGet(url, `查询版本`);
+		try {
+			VersionCheck = resp.body.match(/VersionCheck = "([\d\.]+)"/)[1]
+		} catch (e) {
+			$.logErr(e, resp);
+		} finally {
+			resolve(VersionCheck)
+		}
+		
+	} catch (error) {
+		console.log(error);
+	}
+
+}
  
  
  
