@@ -108,8 +108,8 @@ const user_agents = [
 function randomNumber(min = 0, max = 100) {
   return Math.min(Math.floor(min + Math.random() * (max - min)), max);
 }
-const USER_AGENT = USER_AGENTS[randomNumber(0, USER_AGENTS.length)];
+const user_agents = user_agents[randomNumber(0, user_agents.length)];
 
 module.exports = {
-  USER_AGENT
+  user_agents
 }
