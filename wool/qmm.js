@@ -24,7 +24,8 @@
  let ck_status = true;
  let host = 'app.quanmama.com';
  let hostname = 'https://' + host;
- 
+ let githubproxy = "https://gh.api.99988866.xyz/"
+
  //---------------------------------------------------------------------------------------------------------
  let Change = '每天签到 ,定时领金币，金币兑换现金低保小毛 \n 目前只有签到和查询,定时任务等我找到signdate计算方法吧'
  let thank = `\n感谢 群友 的投稿\n`
@@ -63,14 +64,18 @@
  
  
  async function start() {
+	 
+	  console.log("获取公告");
+          await ScriptNotice();
+          await $.wait(1 * 1000);
  
 	 console.log("\n开始 查询");
 	 await userinfo();
 	 await $.wait(2 * 1000);
          
-     console.log("\n开始 签到");
-     await signin();
-     await $.wait(2 * 1000);
+         console.log("\n开始 签到");
+         await signin();
+         await $.wait(2 * 1000);
 
 
  
@@ -170,7 +175,27 @@
 
 }
  
+ //----------------------------------获取公告
+
+  async function ScriptNotice() {     
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);        
+			 await wait(3);
+		 } else {
+			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
  
+ }
  
  
  
