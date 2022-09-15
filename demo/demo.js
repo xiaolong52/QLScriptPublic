@@ -13,7 +13,7 @@
 
  const { log } = require("console");        //默认不动
 
- const $ = new Env("x俱乐部");   //名字随便
+ const $ = new Env("演示脚本");   //名字随便
  const notify = $.isNode() ? require("./sendNotify") : "";  //调用外部青龙通知  默认不动
  const Notify = 1 		//0为关闭通知,1为打开通知,默认为1      //可以开始调用通知  如 pushplus wxpusher 
  const debug = 0			//0为关闭调试,1为打开调试,默认为0      //开始debug调试模式 我们写脚本可以开启这个
