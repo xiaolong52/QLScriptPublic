@@ -20,7 +20,7 @@
    })
  }
  
-
+let VersionCheck = "0.0.2"
 let githubproxy = "https://gh.api.99988866.xyz/"
 
 //----------------------------------获取公告
