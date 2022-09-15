@@ -27,7 +27,9 @@
 
  
  !(async () => {
- 
+ 	 console.log("获取公告");
+         await ScriptNotice();
+         await $.wait(1 * 1000);
      if (!(await Envs()))  	//多账号分割 判断变量是否为空  初步处理多账号
          return;
      else {
@@ -64,9 +66,6 @@
              // 	1. await只能运行与async函数中
              // 	2. 函数的名字不可以相同
              //      3. 不够可以自己复制
-             console.log("获取公告");
-             await ScriptNotice();
-             await $.wait(1 * 1000);
  
              console.log('开始 做签到任务');
              await signin();
