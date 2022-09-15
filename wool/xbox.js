@@ -27,9 +27,6 @@
 
  
  !(async () => {
- 	 console.log("获取公告");
-         await ScriptNotice();
-         await $.wait(1 * 1000);
      if (!(await Envs()))  	//多账号分割 判断变量是否为空  初步处理多账号
          return;
      else {
@@ -193,33 +190,6 @@
      })
  }
 
- //-----------------------获取公告//
-
-   async function ScriptNotice() {  
-	 try {
-		 let url = {
-			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
-		 };
-		 let result = await httpGet(url, `输出`);
-		 //console.log(result);      
-		 if (result?.status == "true") {
-			 DoubleLog(`公告:${result.Notice} 🎉`);        
-			 await wait(3);
-		 } else {
-			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
-			 //console.log(result);                
-		 }
-	 } catch (error) {
-		 console.log(error);
-	 }
- 
- }
- 
- 
- 
- 
- 
- 
  
  
  
