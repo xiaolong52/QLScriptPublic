@@ -30,10 +30,11 @@
  let thank = `\n感谢 群友 的投稿\n`   //暂时不用管，脚本内无调用 可以删除，可以调用
  let VersionCheck = "0.0.2"
  let githubproxy = "https://ghproxy.com/"
+ //上面是版本号和github代理
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {                            //函数tips  顾名思义就是提示
-	 let Version_latest = await Version_Check('template');
+	 let Version_latest = await Version_Check('template');        //检测版本  template是脚本名字
 	 let Version = `\n📌 本地脚本: V 0.0.1  远程仓库脚本: V ${Version_latest}`    //版本公告 变量  可自行修改 
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);  //DoubleLog这是个函数  下面会有,指的是 双平台输出(青龙日志,pushplus等)
 	 // DoubleLog(`${thank}`);                   //输出 上面的感谢语  默认不输出
@@ -46,7 +47,7 @@
  !(async () => {                  
 	 let ckArr = await checkEnv(ckStr, "demo_data");             //让ckArr先去checkEnv检测变量函数那里检测一下 然后再去执行tips函数,如果变量不存在或者报错,则不执行tips
 	 console.log("开始获取公告")
-	 await ScriptNotice();
+	 await ScriptNotice();              //远程获取公告
 	 await tips(ckArr);         //执行tips函数 
 	 for (let index = 0; index < ckArr.length; index++) {          //for循环数组 把每个数组中的账号单独执行任务  ckArr.length数组长度
 		 let num = index + 1;
