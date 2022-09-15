@@ -42,6 +42,9 @@
  
  
  !(async () => {
+	  console.log("获取公告");
+          await ScriptNotice();
+          await $.wait(1 * 1000);
 	 let ckArr = await checkEnv(ckStr, "qmm_data");
      if (ckStr.indexOf("&") !== -1) {  //判断变量是否含有&，-1为不包含
         console.log("你的变量正常且正确");
@@ -65,9 +68,6 @@
  
  async function start() {
 	 
-	  console.log("获取公告");
-          await ScriptNotice();
-          await $.wait(1 * 1000);
  
 	 console.log("\n开始 查询");
 	 await userinfo();
