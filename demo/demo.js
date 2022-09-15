@@ -23,7 +23,8 @@
  let ck_status = true;   //变量状态 默认不动
  let host = 'xxx.xxxx.com';    //一般为项目抓包中的host(回源地址),自己按照自己的抓包数据请求修改
  let hostname = 'https://' + host;  //默认不动   只是个变量 写下面函数的时候方便调用
- 
+ let UA = $.isNode() ? (require('./user_agents.js').user_agent) : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1";
+ //调用外部UA let可以改变 const不可以
  //---------------------------------------------------------------------------------------------------------
  let Change = '每天签到 ,兑换实物'   //一个声明公告罢了 下面有调用
  let thank = `\n感谢 群友 的投稿\n`   //暂时不用管，脚本内无调用 可以删除，可以调用
