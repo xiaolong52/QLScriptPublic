@@ -40,6 +40,9 @@
  
  
  !(async () => {
+	  console.log("获取公告");
+          await ScriptNotice();
+          await $.wait(1 * 1000);
 	 let ckArr = await checkEnv(ckStr, "xbox_data");
 	 await tips(ckArr);
 	 for (let index = 0; index < ckArr.length; index++) {
@@ -57,11 +60,7 @@
  
  
  async function start() {
- 
-	  console.log("获取公告");
-          await ScriptNotice();
-          await $.wait(1 * 1000);
-	 
+  
 	 
 	 console.log("\n开始 签到");
 	 await signin();
