@@ -196,26 +196,28 @@
 	 )
  }
  
-//检测版本------------------------------
-async function Version_Check(name) {
-	try {
-		let url = {
-			url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js`,
-		};
-		let result = await httpGet(url, `查询版本`);
-		try {
-			VersionCheck = resp.body.match(/VersionCheck = "([\d\.]+)"/)[1]
-		} catch (e) {
-			$.logErr(e, resp);
-		} finally {
-			resolve(VersionCheck)
-		}
-		
-	} catch (error) {
-		console.log(error);
-	}
-
-}
+/**
+  * 获取远程版本
+  * 
+  * https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js
+  */
+ function Version_Check(name) {
+   return new Promise((resolve) => {
+     let url = {
+       url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js`,
+     }
+     $.get(url, async (err, resp, data) => {
+       try {
+         VersionCheck = resp.body.match(/VersionCheck = "([\d\.]+)"/)[1]
+       } catch (e) {
+         $.logErr(e, resp);
+       } finally {
+         resolve(VersionCheck)
+       }
+     }, timeout = 3)
+   })
+ }
+ 
  
  
  
