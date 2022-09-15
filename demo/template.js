@@ -29,6 +29,7 @@
  let Change = '每天签到 ,兑换实物'   //一个声明公告罢了 下面有调用
  let thank = `\n感谢 群友 的投稿\n`   //暂时不用管，脚本内无调用 可以删除，可以调用
  let VersionCheck = "0.0.2"
+ let githubproxy = "https://ghproxy.com/"
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {                            //函数tips  顾名思义就是提示
@@ -44,6 +45,8 @@
  
  !(async () => {                  
 	 let ckArr = await checkEnv(ckStr, "demo_data");             //让ckArr先去checkEnv检测变量函数那里检测一下 然后再去执行tips函数,如果变量不存在或者报错,则不执行tips
+	 console.log("开始获取公告")
+	 await ScriptNotice();
 	 await tips(ckArr);         //执行tips函数 
 	 for (let index = 0; index < ckArr.length; index++) {          //for循环数组 把每个数组中的账号单独执行任务  ckArr.length数组长度
 		 let num = index + 1;
@@ -174,6 +177,29 @@
 	 )
  }
  
+//----------------------------------获取公告
+
+  async function ScriptNotice() {      
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);        
+			 await wait(1);
+		 } else {
+			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
+ 
+ }
+
+
 
 //----------------------------获取版本
 /**
@@ -184,7 +210,7 @@
 function Version_Check(name) {
 	return new Promise((resolve) => {
 		let url = {
-			url: `https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/${name}.js`,
+			url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/${name}.js`,
 		}
 		$.get(url, async (err, resp, data) => {
 			try {
