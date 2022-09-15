@@ -197,7 +197,7 @@
  }
  
 //检测版本------------------------------
-async function Version_heck(name) {
+async function Version_Check(name) {
 	try {
 		let url = {
 			url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js`,
