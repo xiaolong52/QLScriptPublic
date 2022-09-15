@@ -29,7 +29,7 @@
  let Change = '每天签到 ,兑换实物'   //一个声明公告罢了 下面有调用
  let thank = `\n感谢 群友 的投稿\n`   //暂时不用管，脚本内无调用 可以删除，可以调用
  let githubproxy = "https://gh.api.99988866.xyz/"   //github代理地址
- let VersionCheck = "0.0.2"   //仓库远程版本
+ let VersionCheck = "0.0.2"
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {                            //函数tips  顾名思义就是提示
