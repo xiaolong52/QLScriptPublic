@@ -114,7 +114,7 @@
 			headers: {
 				"Host": host,
 				"User-Agent": "xxx",
-				"Cookie: ck[0],
+				"Cookie": ck[0],
 			}
 		};
 		let result = await httpGet(url, `查询积分`);
