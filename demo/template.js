@@ -205,8 +205,7 @@
 //----------------------------获取版本
 /**
  * 获取远程版本
- * http://yml-gitea.ml:2233/yml/JavaScript-yml/raw/branch/master/${name}.js
- * https://raw.gh.fakev.cn/yml2213/javascript/master/${name}/${name}.js
+ * https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/${name}.js   注意demo为演示
  */
 function Version_Check(name) {
 	return new Promise((resolve) => {
