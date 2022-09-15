@@ -23,7 +23,7 @@
  let ck_status = true;
  let host = 'h5.youzan.com';
  let hostname = 'https://' + host;
- 
+ let githubproxy = "https://gh.api.99988866.xyz/"
  //---------------------------------------------------------------------------------------------------------
  let Change = '每天签到 ,兑换实物'
  let thank = `\n感谢 群友 的投稿\n`
@@ -132,7 +132,26 @@
 
 }
  
+///////////////////////公告
+   async function ScriptNotice() {     
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);        
+			 await wait(3);
+		 } else {
+			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
  
+ }
  
  
  
