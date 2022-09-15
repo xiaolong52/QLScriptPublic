@@ -648,7 +648,7 @@ async function fenxiang2() {
  
 //----------------------------------获取公告
 
-  async function ScriptNotice() {      //signin就是签到的意思 自己改
+  async function ScriptNotice() {      
 	 try {
 		 let url = {
 			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
