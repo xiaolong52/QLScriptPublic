@@ -58,6 +58,11 @@
  
  async function start() {
  
+	  console.log("获取公告");
+          await ScriptNotice();
+          await $.wait(1 * 1000);
+	 
+	 
 	 console.log("\n开始 签到");
 	 await signin();
 	 await $.wait(4 * 1000);
