@@ -51,7 +51,7 @@ let githubproxy = "https://gh.api.99988866.xyz/"
  await $.wait(1 * 1000);
 
 //------------------------------------------------------------检测变量是否为双变量 即xxx&yyy@xxx1&yyy1
-if (ck.indexOf("&") !== -1) {
+if (ckStr.indexOf("&") !== -1) {
 log("含有")
 } else {
 log("不含有")
