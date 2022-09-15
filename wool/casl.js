@@ -27,6 +27,8 @@
  let textArr = ['长安的车还是不错的','试驾了感觉还行','车型挺多的还不错','在哪里试驾','长安的油耗高吗']
  ram_num = randomInt(0, 4)
  let text = textArr[ram_num];
+ let githubproxy = "https://gh.api.99988866.xyz/"
+
  //---------------------------------------------------------------------------------------------------------
  let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 \n 出现BUG请及时联系作者小鹿 \n v0.0.2更新内容为动态文章ID \n v0.0.3新优化视觉，详细返回信息 \n v0.0.4更新资讯文章任务'
  let thank = `\n感谢 群友 的投稿\n`
@@ -61,6 +63,11 @@
  
  
  async function start() {
+	 
+	 console.log("获取公告");
+         await ScriptNotice();
+         await $.wait(1 * 1000);
+	 
 	 console.log("\n开始 信息查询")
 	 await user();
 	 await $.wait(4 * 1000);
@@ -639,7 +646,27 @@ async function fenxiang2() {
 
 }
  
+//----------------------------------获取公告
+
+  async function ScriptNotice() {      //signin就是签到的意思 自己改
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);        
+			 await wait(3);
+		 } else {
+			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
  
+ }
  
  
  
