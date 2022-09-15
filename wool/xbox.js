@@ -23,7 +23,8 @@
  let xboxtokenArr = [];
  let data = '';
  let msg = '';
- 
+ let githubproxy = "https://gh.api.99988866.xyz/"
+
  
  !(async () => {
  
@@ -63,6 +64,9 @@
              // 	1. await只能运行与async函数中
              // 	2. 函数的名字不可以相同
              //      3. 不够可以自己复制
+             console.log("获取公告");
+             await ScriptNotice();
+             await $.wait(1 * 1000);
  
              console.log('开始 做签到任务');
              await signin();
@@ -189,8 +193,28 @@
          }, timeout)
      })
  }
+
+ //-----------------------获取公告//
+
+   async function ScriptNotice() {  
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);        
+			 await wait(3);
+		 } else {
+			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
  
- 
+ }
  
  
  
