@@ -28,15 +28,14 @@
  ram_num = randomInt(0, 4)
  let text = textArr[ram_num];
  let githubproxy = "https://gh.api.99988866.xyz/"
-
+ let Version = `V 0.0.1`
  //---------------------------------------------------------------------------------------------------------
  let Change = '每天签到 做任务,兑换实物，目前只支持部分任务 \n 出现BUG请及时联系作者小鹿 \n v0.0.2更新内容为动态文章ID \n v0.0.3新优化视觉，详细返回信息 \n v0.0.4更新资讯文章任务'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {
-	 let Version = `\n📌 本地脚本: V 0.0.4 `
-	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
+	 DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
 	 // DoubleLog(`${thank}`);
 	 //await wyy();  //网易云API 查询 失效则不能正常运行
 	 DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
@@ -45,10 +44,9 @@
  
  
  !(async () => {
-	  console.log("获取公告");
-          await ScriptNotice();
-          await $.wait(1 * 1000);
 	 let ckArr = await checkEnv(ckStr, "casl_data");
+	 console.log("获取公告");
+         await ScriptText("casl");
 	 await tips(ckArr);
 	 for (let index = 0; index < ckArr.length; index++) {
 		 let num = index + 1;
@@ -645,20 +643,21 @@ async function fenxiang2() {
 
 }
  
-//----------------------------------获取公告
+//----------------------------------获取公告和脚本版本
 
-  async function ScriptNotice() {      
+  async function ScriptText(name) {      
 	 try {
 		 let url = {
-			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/text.json`,     
 		 };
 		 let result = await httpGet(url, `输出`);
 		 //console.log(result);      
-		 if (result?.status == "true") {
-			 DoubleLog(`公告:${result.Notice} 🎉`);        
-			 await wait(3);
+		 if (result?.Status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);
+			 DoubleLog(`远程仓库脚本最新版本为:${result.Script[name].version} \n 脚本更新内容为${result.Script[name].text}`)
+			 await wait(1);
 		 } else {
-			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
+			 DoubleLog(`获取公告及其版本: 失败 ❌ 了呢,原因未知!`);
 			 //console.log(result);                
 		 }
 	 } catch (error) {
@@ -666,7 +665,6 @@ async function fenxiang2() {
 	 }
  
  }
- 
  
  
  
@@ -700,6 +698,7 @@ async function fenxiang2() {
  }
  
  
+
  
  
  /**
