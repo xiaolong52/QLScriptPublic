@@ -42,7 +42,7 @@
  !(async () => {
 	 let ckArr = await checkEnv(ckStr, "xbox_data");
 	 console.log("获取公告");
-         await ScriptText(xbox2);
+         await ScriptText("xbox2");
 	 await tips(ckArr);
 	 for (let index = 0; index < ckArr.length; index++) {
 		 let num = index + 1;
