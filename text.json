@@ -2,7 +2,7 @@
   "Status": "true",
   "Notice":  "小鹿青龙脚本通知\n更新最新动态\n增加远程通知\nQQ群862839604",
   "Script": {
-    "demo": {
+   "demo": {
      "version" : "0.0.2",
      "text" : "更新了远程自定义更新内容"
    },
@@ -10,9 +10,13 @@
     "version": "0.0.3",
     "text": "测试"
    },
-    "casl": {
+   "casl": {
     "version": "0.0.5",
     "text": "当前脚本寄了"
-    }
+    },
+   "qmm": {
+    "version": "0.0.1",
+    "text": "寄了"
+   }
   }
 }
