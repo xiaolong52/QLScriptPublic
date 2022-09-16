@@ -3,7 +3,8 @@
 =====================
 拉库命令
 
-ql repo https://github.com/zhaoshicong/QLScriptPublic.git
+ql repo https://ghproxy.com/https://github.com/zhaoshicong/QLScriptPublic.git "wool" "demo" "user_agents.js"
+
 =====================
 青碳行.js -> 添加成功
 
