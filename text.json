@@ -1,10 +1,14 @@
 {
-  "status": "true",
-  "Notice": "小鹿青龙脚本通知 \n 更新最新动态 \n增加远程通知 \nQQ群862839604",
-  "script" : {
-    "xbox2" : {
+  "Status": "true",
+  "Notice":  "小鹿青龙脚本通知 \n 更新最新动态 \n增加远程通知 \nQQ群862839604",
+  "Script": {
+    "xbox2": {
      "version" : "0.0.2",
-     "notice" : "hhh"
+     "text" : "hhh"
+   },
+   "xbox": {
+    "version": "0.0.3",
+    "text": "sss"
    }
   }
 }
