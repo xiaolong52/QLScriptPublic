@@ -25,15 +25,13 @@
  let hostname = 'https://' + host;
  let githubproxy = "https://gh.api.99988866.xyz/"
  //---------------------------------------------------------------------------------------------------------
- let VersionCheck = "0.0.1"
+ let Version = "0.0.1"
  let Change = '每天签到 ,兑换实物'
  let thank = `\n感谢 群友 的投稿\n`
  //---------------------------------------------------------------------------------------------------------
  
  async function tips(ckArr) {
-	let Version_latest = await Version_Check('xbox2');
-	let Version = `\n📌 本地脚本: V 0.1.0  远程仓库脚本: V ${Version_latest}`
-	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
+	 DoubleLog(`当前脚本版本${Version}\n📌`);
 	 // DoubleLog(`${thank}`);
 	 //await wyy();  //网易云API 查询 失效则不能运行
 	 DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
@@ -42,10 +40,9 @@
  
  
  !(async () => {
-	  console.log("获取公告");
-          await ScriptNotice();
-          await $.wait(1 * 1000);
 	 let ckArr = await checkEnv(ckStr, "xbox_data");
+	 console.log("获取公告");
+         await ScriptText(xbox2);
 	 await tips(ckArr);
 	 for (let index = 0; index < ckArr.length; index++) {
 		 let num = index + 1;
@@ -138,29 +135,10 @@
 
 }
  
-///////////////////////公告
-   async function ScriptNotice() {     
-	 try {
-		 let url = {
-			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
-		 };
-		 let result = await httpGet(url, `输出`);
-		 //console.log(result);      
-		 if (result?.status == "true") {
-			 DoubleLog(`公告:${result.Notice} 🎉`);        
-			 await wait(3);
-		 } else {
-			 DoubleLog(`获取公告: 失败 ❌ 了呢,原因未知!`);         
-			 //console.log(result);                
-		 }
-	 } catch (error) {
-		 console.log(error);
-	 }
- 
- }
+
  
  
- 
+
  
  
  
@@ -196,29 +174,30 @@
 	 )
  }
  
-/**
-  * 获取远程版本
-  * 
-  * https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js
-  */
- function Version_Check(name) {
-   return new Promise((resolve) => {
-     let url = {
-       url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/${name}.js`,
-     }
-     $.get(url, async (err, resp, data) => {
-       try {
-         VersionCheck = resp.body.match(/VersionCheck = "([\d\.]+)"/)[1]
-       } catch (e) {
-         $.logErr(e, resp);
-       } finally {
-         resolve(VersionCheck)
-       }
-     }, timeout = 3)
-   })
+//----------------------------------获取公告和脚本版本
+
+  async function ScriptText(name) {      
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/text.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.Status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);
+			 DoubleLog(`远程仓库脚本最新版本为:${result.Script[name].version} \n 脚本更新内容为${result.Script[name].text}`)
+			 await wait(1);
+		 } else {
+			 DoubleLog(`获取公告及其版本: 失败 ❌ 了呢,原因未知!`);
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
+ 
  }
  
- 
+
  
  
  /**
