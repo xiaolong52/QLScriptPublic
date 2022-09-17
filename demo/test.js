@@ -60,6 +60,25 @@ log("含有")
 log("不含有")
 }
 
+//----------------------------------获取公告和脚本版本
 
-apipost.cn   api调试地址
-远程仓库可以改用gitee或者coding
+  async function ScriptText(name) {      
+	 try {
+		 let url = {
+			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/text.json`,     
+		 };
+		 let result = await httpGet(url, `输出`);
+		 //console.log(result);      
+		 if (result?.Status == "true") {
+			 DoubleLog(`公告:${result.Notice} 🎉`);
+			 DoubleLog(`远程仓库脚本最新版本为:${result.Script[name].version} \n 脚本更新内容为${result.Script[name].text}`)
+			 await wait(1);
+		 } else {
+			 DoubleLog(`获取公告及其版本: 失败 ❌ 了呢,原因未知!`);
+			 //console.log(result);                
+		 }
+	 } catch (error) {
+		 console.log(error);
+	 }
+ 
+ }
