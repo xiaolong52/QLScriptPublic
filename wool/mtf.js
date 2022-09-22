@@ -4,11 +4,11 @@
  *
  * cron 0 0,7 * * *  mtf.js         
  *
- * 9-22		签到兑换实物
- * 投稿余生 
+ * 9-5		签到兑换实物
+ *
  * ========= 青龙--配置文件 =========
  * 变量格式: export mtf_data=''   ,多账号用 换行 或 @ 分割
- * 抓域名 api.58moto.com下请求中 token和userid 的值填入变量  用&连接
+ * 抓域名 api.58moto.com 下请求中 token和uid 的值填入变量 用&连接
  */
 
  const { log } = require("console");
@@ -16,7 +16,7 @@
  const $ = new Env("摩托范");
  const notify = $.isNode() ? require("./sendNotify") : "";
  const Notify = 1
- const debug = 1
+ const debug = 0
  //---------------------------------------------------------------------------------------------------------
  let ckStr = ($.isNode() ? process.env.mtf_data : $.getdata('mtf_data')) || '';
  let msg, ck;
@@ -63,15 +63,15 @@
  
      console.log("\n开始 用户信息查询");
      await userinfo();
-     await $.wait(4 * 1000);
-     //weekdate = local_year() + local_month_two(); +local_day_two();
+     await $.wait(3 * 1000);
+     //weekdate = local_year() + local_month_two(); +local_day_two();  年份月份日期
 	 console.log("\n开始 签到");
 	 await signin();
-	 await $.wait(4 * 1000);
+	 await $.wait(3 * 1000);
 
      console.log("\n开始 查询日常任务");
 	 await taskList();
-	 await $.wait(4 * 1000);
+	 await $.wait(3 * 1000);
          //以上 三行代码可以复制 只需要改动 函数名和输出
 
 
