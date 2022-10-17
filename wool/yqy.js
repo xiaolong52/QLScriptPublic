@@ -77,6 +77,9 @@
 	 console.log("\n开始 用户信息查询");
 	 await userinfo();
 	 await $.wait(2 * 1000);
+	 console.log("\n开始 积分查询");
+     await jifen();
+     await $.wait(2 * 1000);
          //以上 三行代码可以复制 只需要改动 函数名和输出
      //console.log("\n开始 奖品列表查询");
      //await prizelist();
@@ -149,6 +152,34 @@
             user_id=result.data.userId
         } else {
             DoubleLog(`查询用户信息: 失败 ❌ 了呢,原因未知!`);
+           // console.log(result);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+ //------用户积分查询 get
+ async function jifen() {
+    try {
+        let url = {
+            url: `${hostname}/v2/integral/info`,
+            headers: {
+                "Host": host,
+                "token": user_token
+
+            },
+
+        };
+        let result = await httpGet(url, `用户积分查询`);
+
+        //console.log(result);
+        if (result?.code == 0) {
+            DoubleLog(`用户当前积分为:${result.data.integralNum}  本周签到天数为: ${result.data.continuousDay}天🎉`);
+            await wait(3);
+            user_id=result.data.userId
+        } else {
+            DoubleLog(`查询积分信息: 失败 ❌ 了呢,原因未知!`);
            // console.log(result);
         }
     } catch (error) {
