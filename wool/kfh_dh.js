@@ -85,13 +85,13 @@
         };
         let result = await httpGet(url, `用户信息查询`);
 
-        console.log(result);
+        //console.log(result);
         if (result?.error_code == 0) {
             DoubleLog(`当前用户为:${result.data.nickname} 🎉`);
             await wait(3);
         } else {
             DoubleLog(`查询: 失败 ❌ 了呢,原因未知!`);
-            console.log(result);
+           // console.log(result);
         }
     } catch (error) {
         console.log(error);
@@ -118,7 +118,7 @@
 		 };
 		 let result = await httpPost(url, `兑换E卡`);
  
-		 console.log(result);
+		 //console.log(result);
 		 if (result?.error_code == 0) {
 			 DoubleLog(`兑换:${result.msg} 🎉`);
 			 await wait(3);
@@ -126,7 +126,7 @@
 			 DoubleLog(`兑换:${result.msg},兑换失败`);
 		 } else {
 			 DoubleLog(`兑换: 失败 ❌ 了呢,原因未知!`);
-			 console.log(result);
+			 //console.log(result);
 		 }
 	 } catch (error) {
 		 console.log(error);
