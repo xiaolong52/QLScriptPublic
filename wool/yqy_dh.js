@@ -152,7 +152,7 @@
 				"token": user_token,
 			}
 		};
-		let result = await httpGet(url, `查询积分`);
+		let result = await httpGet(url, `奖品查询`);
 
 		//console.log(result);
 		if (result?.code == 0) {
@@ -186,7 +186,7 @@
 
 		//console.log(result);
 		if (result?.code == 0) {
-			DoubleLog(`查询奖品ID:${result.data.prizeId} 🎉,奖品昵称为:${result.data.prizeName}🎉库存剩余:${result.data.stockNum} `);
+			DoubleLog(`查询奖品ID:${result.data.prizeId} 🎉,奖品昵称:${result.data.prizeName}🎉库存剩余:${result.data.stockNum} 所需积分:${result.data.integralNum}`);
 			await wait(1);
 		} else {
 			DoubleLog(`查询奖励: 失败 ❌ 了呢,原因未知!`);
