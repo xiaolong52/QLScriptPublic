@@ -74,7 +74,7 @@
 	 await signin();
 	 await $.wait(2 * 1000);
 	 console.log("\n开始 执行分享");
-	 await share();
+	 await getshareid();
 	 await $.wait(2 * 1000);
  
  }
@@ -95,7 +95,7 @@
         //console.log(result);
         if (result?.error_code == 0) {
             DoubleLog(`当前用户为:${result.data.nickname} 🎉`);
-            await wait(3);
+            await wait(2);
         } else {
             DoubleLog(`查询失败！卡夫亨服务器卡爆啦 `);
             //console.log(result);
@@ -125,7 +125,7 @@
 		 //console.log(result);
 		 if (result?.error_code == 0) {
 			 DoubleLog(`签到:${result.msg} 🎉`);
-			 await wait(3);
+			 await wait(2);
 		 } else if (result?.error_code == 30001) {
 			 DoubleLog(`${result.msg},请勿重复签到`);
 		 } else {
@@ -138,10 +138,43 @@
  
  }
  
+ /**
+  * 获取分享文章    httpPost  看你的请求头
+  */
+  async function getshareid() {
+	try {
+		let url = {
+			url: `${hostname}/crm/public/index.php/api/v1/getCookbookIndex`,
+			headers: {
+				"Host": host,
+				"token": ck[0],
+				"Content-Type": "application/x-www-form-urlencoded",
+				"Content-Length": 18,
+			},
+			body:"page=1&pagesize=10"
+		};
+		let result = await httpPost(url, `获取随机分享文章ID`);
+
+		//console.log(result);
+		if (result?.error_code == 0) {
+			index = randomInt(0,9)
+			DoubleLog(`获取随机分享文章ID:${result.data.chineseCookbook.data[index].id} 🎉`);
+			let shareid=result.data.chineseCookbook.data[index].id
+			await share(shareid);
+		} else {
+			DoubleLog(`获取: 失败 ❌ 了呢,原因未知!`);
+			//console.log(result);
+		}
+		
+	} catch (error) {
+		console.log(error);
+	}
+
+}
   /**
   * 分享    httpPost        //参考上面的即可  这个函数也可以复制 改下相应的就可以
   */
-   async function share() {
+   async function share(shareid) {
 	try {
 		let url = {
 			url: `${hostname}/crm/public/index.php/api/v1/createCookbookCode`,
@@ -151,14 +184,14 @@
 				"Content-Length": 15,
 				"Content-Type": "application/x-www-form-urlencoded"
 			},
-			body:"cookbook_id=230"
+			body:"cookbook_id="+shareid
 		};
 		let result = await httpPost(url, `分享`);
 
 		//console.log(result);
 		if (result?.error_code == 0) {
 			DoubleLog(`:${result?.data.code_url}获取分享文章链接成功,将会被添加到内部助力池,骚等 🎉`);
-			await wait(3);
+			await wait(2);
 			//shareurl=result?.data.code_url 
 			//sharecode = shareurl.replace("https://fscrm.kraftheinz.net.cn/?","")  //删除链接中多余部分
 			//shareurl=result?.data.code_url  //将分享链接push到助力池
