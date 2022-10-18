@@ -3,3 +3,7 @@
 要依次执行。
 apipost.cn   api调试地址  抓包乱码可以用这个
 远程仓库可以改用gitee或者coding
+值得参考的leaf大佬的模板
+https://github.com/leafTheFish/DeathNote/blob/main/kjwj.js
+https://github.com/leafTheFish/DeathNote/blob/main/jcCheckin.js
+https://github.com/leafTheFish/DeathNote/blob/main/xmyd.js
