@@ -12,7 +12,7 @@ const Notify = 1
 const debug = 0
 let ckStr = ($.isNode() ? process.env.demo_data : $.getdata('demo_data')) || '';  //检测CK  外部
 let msg, ck;
-let host = 'kraftheinzcrm.kraftheinz.net.cn';
+let host = 'xxx.xxx.xxx';
 let hostname = 'https://' + host;
 //---------------------------------------------------//
 async function tips(ckArr) {
