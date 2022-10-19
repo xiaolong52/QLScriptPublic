@@ -3,7 +3,8 @@
  * Xbox俱乐部
  *
  * cron 0 0,7 * * *  xbox_v2.js         
- *  多账号并行执行任务模板 class我实在是不会
+ *  多账号并行执行任务模板V2  
+ * 捉域名https://h5.youzan.com/wscuser/域名下的extra-data中的sid
  */
 //=====================================================//
 const $ = new Env("xbox俱乐部");
@@ -138,6 +139,8 @@ async function checkin() {
         } else if (result?.code == 1000030071) {
             console.log(`账号[` + Number(i + 1) + `]` + `签到失败！原因${result.msg}`);
             //console.log(result);
+        } else {
+            console.log(`账号[` + Number(i + 1) + `]` + `签到失败！原因${result.msg}`)
         }
     } catch (error) {
         console.log(error);
