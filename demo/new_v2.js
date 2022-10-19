@@ -75,7 +75,6 @@ async function userinfo() {
         //console.log(result);
         if (result?.errcode == 0) {
             console.log(`账号[` + Number(i + 1) + `]` + `当前用户为:${result.errstr} 🎉`);
-            await wait(2);
         } else {
             console.log(`查询失败！`);
             //console.log(result);
