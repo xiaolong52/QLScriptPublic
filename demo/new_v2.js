@@ -74,7 +74,7 @@ async function userinfo() {
 
         //console.log(result);
         if (result?.errcode == 0) {
-            DoubleLog(`\n账号` + Number(i + 1) + `ID` + `当前用户为:${result.errstr} 🎉`);
+            console.log(`账号[` + Number(i + 1) + `]` + `当前用户为:${result.errstr} 🎉`);
             await wait(2);
         } else {
             DoubleLog(`查询失败！`);
@@ -101,10 +101,10 @@ async function getshareid() {
 
         //console.log(result);
         if (result?.errcode == 0) {
-            DoubleLog(`\n账号` + Number(i + 1) + `ID` + `当前用户为:${result.errstr} 🎉`);
+            console.log(`账号[` + Number(i + 1) + `]` + `当前用户为:${result.errstr} 🎉`);
             await wait(2);
         } else {
-            DoubleLog(`查询失败！`);
+            console.log(`查询失败！`);
             //console.log(result);
         }
     } catch (error) {
