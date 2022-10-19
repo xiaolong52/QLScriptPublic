@@ -3,7 +3,7 @@
  * 自建模板
  *
  * cron 0 0,7 * * *  demo.js         
- *  多账号并行执行任务模板 
+ *  多账号并行执行任务模板 class我实在是不会
  */
 //=====================================================//
 const $ = new Env("演示模板");
@@ -21,7 +21,8 @@ async function tips(ckArr) {
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
 }
 !(async () => {
-    //await tips(ckArr);  //脚本提示
+    let ckArr = await checkEnv(ckStr, "demo_data");  //检查CK
+    await tips(ckArr);  //脚本提示
     await start(); //开始任务
     await SendMsg(msg); //发送通知
 
