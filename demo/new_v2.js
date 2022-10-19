@@ -77,7 +77,7 @@ async function userinfo() {
             console.log(`账号[` + Number(i + 1) + `]` + `当前用户为:${result.errstr} 🎉`);
             await wait(2);
         } else {
-            DoubleLog(`查询失败！`);
+            console.log(`查询失败！`);
             //console.log(result);
         }
     } catch (error) {
@@ -200,39 +200,6 @@ function DoubleLog(data) {
     } else {
         console.log(`${data}`);
         msg += `\n${data}`;
-    }
-
-}
-/**
- * 发送消息
- */
-async function SendMsg(message) {
-    if (!message) return;
-    if (Notify > 0) {
-        if ($.isNode()) {
-            var notify = require("./sendNotify");
-            await notify.sendNotify($.name, message);
-        } else {
-            // $.msg(message);
-            $.msg($.name, '', message)
-        }
-    } else {
-        console.log(message);
-    }
-}
-
-/**
- * 双平台log输出
- */
-function DoubleLog(data) {
-    if ($.isNode()) {
-        if (data) {
-            console.log(`    ${data}`);
-            msg += `\n    ${data}`;
-        }
-    } else {
-        console.log(`    ${data}`);
-        msg += `\n    ${data}`;
     }
 
 }
