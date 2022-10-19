@@ -7,7 +7,7 @@
  * 捉域名https://h5.youzan.com/wscuser/域名下的extra-data中的sid
  */
 //=====================================================//
-const $ = new Env("xbox俱乐部");
+const $ = new Env("xbox俱乐部V2");
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1
 const debug = 0
