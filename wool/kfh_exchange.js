@@ -53,7 +53,7 @@ async function start() {
     //    await $.wait(2 * 1000);
     //}
 
-    await newstart("兑换", userinfo, 2)
+    await newstart("测试", userinfo, 2)
 
 }
 
@@ -108,7 +108,7 @@ async function exchange(nickname) {
         let result = await httpPost(url, `兑换`);
 
         //console.log(result);
-        if (result?.errcode == 0) {
+        if (result?.error_code == 0) {
             console.log(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换成功🎉`);
             await wait(2);
         } else if (result?.error_code == 30005) {
