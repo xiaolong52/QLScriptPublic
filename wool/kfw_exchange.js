@@ -266,7 +266,7 @@ async function httpGet(getUrlObject, tip, timeout = 3) {
                 } catch (e) {
                     //console.log(err, resp);
                     console.log(`\n ${tip} 失败了!请稍后尝试!!`);
-                    msg = `\n ${tip} 失败了!请稍后尝试!!`
+                    //msg = `\n ${tip} 失败了!请稍后尝试!!`
                     console.log("卡夫味服务器卡爆啦");
                 } finally {
                     resolve();
@@ -314,7 +314,7 @@ async function httpPost(postUrlObject, tip, timeout = 3) {
                 } catch (e) {
                     //console.log(err, resp);
                     console.log(`\n ${tip} 失败了!请稍后尝试!!`);
-                    msg = `\n ${tip} 失败了!请稍后尝试!!`
+                    //msg = `\n ${tip} 失败了!请稍后尝试!!`
                     console.log("卡夫味服务器卡爆啦");
                 } finally {
                     resolve();
@@ -358,7 +358,7 @@ async function httpRequest(postOptionsObject, tip, timeout = 3) {
             } catch (e) {
                 //console.log(err, resp);
                 console.log(`\n ${tip} 失败了!请稍后尝试!!`);
-                msg = `\n ${tip} 失败了!请稍后尝试!!`
+                //msg = `\n ${tip} 失败了!请稍后尝试!!`
                 console.log("卡夫味服务器卡爆啦");
             } finally {
                 resolve();
