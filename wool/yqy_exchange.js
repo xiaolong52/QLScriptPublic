@@ -17,8 +17,8 @@ let hostname = 'https://' + host;
 //---------------------------------------------------//
 async function tips(ckArr) {
     //DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
-    DoubleLog(`\n 自动兑换奖品 自行设置定时`);
-    DoubleLog(`\n============= 共找到 ${ckArr.length} 个账号 =============`);
+    console.log(`\n 自动兑换奖品 自行设置定时`);
+    console.log(`\n============= 共找到 ${ckArr.length} 个账号 =============`);
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
 }
 !(async () => {
@@ -106,9 +106,9 @@ async function jifen() {
 
         //console.log(result);
         if (result?.code == 0) {
-            DoubleLog(`账号[` + Number(i + 1) + `]用户${userId}积分:${result.data.integralNum} 本周签到天数: ${result.data.continuousDay}天🎉`);
+            console.log(`账号[` + Number(i + 1) + `]用户${userId}积分:${result.data.integralNum} 本周签到天数: ${result.data.continuousDay}天🎉`);
         } else {
-            DoubleLog(`账号[` + Number(i + 1) + `]查询积分信息: 失败 ❌ 了呢,原因未知!`);
+            console.log(`账号[` + Number(i + 1) + `]查询积分信息: 失败 ❌ 了呢,原因未知!`);
             // console.log(result);
         }
     } catch (error) {
@@ -134,7 +134,7 @@ async function getlist() {
         //console.log(result);
         if (result?.code == 0) {
             for (var index = 0; index < result.data.length; index++) {
-                DoubleLog(`查询奖品ID:[${result.data[index].prizeId}] 🎉,奖品昵称为:[${result.data[index].prizeName}] 所需积分${result.data[index].integralNum}`);
+                console.log(`查询奖品ID:[${result.data[index].prizeId}] 🎉,奖品昵称为:[${result.data[index].prizeName}] 所需积分${result.data[index].integralNum}`);
                 //detailsId = result.data[index].prizeId
                 //await getdetails(detailsId);
             }
@@ -166,7 +166,7 @@ async function getdetails() {
         if (result?.code == 0) {
             DoubleLog(`查询奖品ID:${result.data.prizeId} 🎉,奖品昵称:${result.data.prizeName}🎉库存剩余:${result.data.stockNum} 所需积分:${result.data.integralNum}`);
         } else {
-            DoubleLog(`查询奖励: 失败 ❌ 了呢,原因未知!`);
+            console.log(`查询奖励: 失败 ❌ 了呢,原因未知!`);
             //console.log(result);
         }
     } catch (error) {
@@ -198,7 +198,7 @@ async function exchange() {
             DoubleLog(`账号[` + Number(i + 1) + `] 用户` + userId + `兑换奖品ID${ck[2]}成功:${result.message} 🎉 `);
             await wait(3);
         } else {
-            DoubleLog(`兑换奖品ID${ck[2]}失败:${result.message} `);
+            console.log(`兑换奖品ID${ck[2]}失败:${result.message} `);
             //console.log(result);
         }
     } catch (error) {
