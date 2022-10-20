@@ -95,7 +95,7 @@ async function userinfo() {
 }
 
 //用户签到 POST
-async function dailySign(nickname) {
+async function dailySign() {
     try {
         let url = {
             url: `${hostname}/crm/public/index.php/api/v1/dailySign`,
@@ -123,7 +123,7 @@ async function dailySign(nickname) {
 
 
 //用户分享 POST
-async function share(nickname) {
+async function share() {
     try {
         let url = {
             url: `${hostname}/crm/public/index.php/api/v1/recordScoreShare`,
