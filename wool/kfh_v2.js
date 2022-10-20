@@ -1,12 +1,13 @@
 /**
  *
- * 自建模板
+ * 卡夫亨
  *
  * cron 0 0,7 * * *  demo.js         
- *  多账号并行执行任务模板 class我实在是不会
+ *  多账号并行执行任务模板 
+ * fscrm.kraftheinz.net.cn/crm/域名下的token
  */
 //=====================================================//
-const $ = new Env("演示模板");
+const $ = new Env("卡夫亨");
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1
 const debug = 0
