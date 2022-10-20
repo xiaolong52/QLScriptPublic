@@ -53,7 +53,7 @@ async function start() {
     //    await $.wait(2 * 1000);
     //}
 
-    await newstart("兑换", userinfo, 2)
+    await newstart("兑换", userinfo, 10)
 
 }
 
@@ -80,7 +80,7 @@ async function userinfo() {
             let nickname = result.data.nickname
             await exchange(nickname);
         } else {
-            console.log(`账号[` + Number(i + 1) + `]查询失败！`);
+            DoubleLog(`账号[` + Number(i + 1) + `]查询失败！可能是CK失效!`);
             //console.log(result);
         }
     } catch (error) {
@@ -112,10 +112,14 @@ async function exchange(nickname) {
             DoubleLog(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换成功🎉`);
             await wait(2);
         } else if (result?.error_code == 80005) {
-            console.log(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换:${result.msg},兑换失败`);
-        } else {
-            console.log(`账号[` + Number(i + 1) + `]用户为:[` + nickname + `]兑换失败!`);
+            console.log(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换:${result.msg}`); //兑换一次上限
+        } else if (result?.error_code == 30002) {
+            console.log(`账号[` + Number(i + 1) + `]用户为:[` + nickname + `]兑换失败!${result.msg}`);//积分不足
             //console.log(result);
+        } else if (result?.error_code == 80007) {
+            console.log(`账号[` + Number(i + 1) + `]用户为:[` + nickname + `]兑换失败!${result.msg}`);//有兑换在队列中
+        } else {
+            console.log(`账号[` + Number(i + 1) + `]用户为:[` + nickname + `]兑换失败!`)
         }
     } catch (error) {
         //console.log(error);
