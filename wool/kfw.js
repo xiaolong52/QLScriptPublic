@@ -17,6 +17,7 @@ let host = 'kraftheinzcrm.kraftheinz.net.cn';
 let hostname = 'https://' + host;
 //---------------------------------------------------//
 async function tips(ckArr) {
+    let ckArr = await checkEnv(ckStr, "kfw_data");  //检查CK
     //DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
     console.log("日5积分 可换VIP卡等")
     DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
@@ -100,21 +101,21 @@ async function share(nickname) {
             headers: {
                 "Host": host,
                 "token": ck[0],
-                "Content-Length":57,  //如果没有 length  则判定为  点开自己的分享链接
-                "Content-Type":"application/x-www-form-urlencoded"
+                "Content-Length": 57,  //如果没有 length  则判定为  点开自己的分享链接
+                "Content-Type": "application/x-www-form-urlencoded"
 
             },
-            body:"invite_id=" + ck[0] +"&cookbook_id=20"
+            body: "invite_id=" + ck[0] + "&cookbook_id=20"
 
         };
         let result = await httpPost(url, `分享`);
 
         //console.log(result);
         if (result?.error_code == 0) {
-            DoubleLog(`账号[` + Number(i + 1) + `]` + `用户[`+ nickname +`]执行分享成功:${result.msg}🎉`);
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `用户[` + nickname + `]执行分享成功:${result.msg}🎉`);
             await wait(2);
         } else {
-            console.log(`账号[` + Number(i + 1) + `]` + `用户[`+ nickname +`]执行分享失败${result.msg}`);
+            console.log(`账号[` + Number(i + 1) + `]` + `用户[` + nickname + `]执行分享失败${result.msg}`);
             //console.log(result);
         }
     } catch (error) {
