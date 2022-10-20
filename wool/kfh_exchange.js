@@ -53,7 +53,7 @@ async function start() {
     //    await $.wait(2 * 1000);
     //}
 
-    await newstart("测试", userinfo, 2)
+    await newstart("兑换", userinfo, 2)
 
 }
 
