@@ -17,13 +17,13 @@ let host = 'kraftheinzcrm.kraftheinz.net.cn';
 let hostname = 'https://' + host;
 //---------------------------------------------------//
 async function tips(ckArr) {
-    let ckArr = await checkEnv(ckStr, "kfw_data");  //检查CK
     //DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
-    console.log("日5积分 可换VIP卡等")
+    console.log("日6积分 可换VIP卡等")
     DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
 }
 !(async () => {
+    let ckArr = await checkEnv(ckStr, "kfw_data");  //检查CK
     await tips(ckArr);  //脚本提示
     await start(); //开始任务
     await SendMsg(msg); //发送通知
@@ -55,7 +55,9 @@ async function start() {
     //    await $.wait(2 * 1000);
     //}
 
-    await newstart("信息/签到", userinfo, 5)
+    await newstart("登录/CK检测", userinfo, 3)
+    await newstart("签到", dailySign, 5)
+    await newstart("分享", share, 5)
 
 }
 
@@ -78,9 +80,9 @@ async function userinfo() {
 
         //console.log(result);
         if (result?.error_code == 0) {
-            //console.log(`账号[` + Number(i + 1) + `]` + `当前用户为:${result.data.nickname} 🎉`);
-            let nickname = result.data.nickname
-            await share(nickname);
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `当前用户为[${result.data.nickname}] 积分${result?.data.memberInfo.totalScore}🎉`);
+            //let nickname = result.data.nickname
+            //let jifen = result?.data.memberInfo.totalScore
         } else {
             DoubleLog(`账号[` + Number(i + 1) + `]` + `查询失败,可能是CK失效!`);
             //console.log(result);
@@ -92,8 +94,35 @@ async function userinfo() {
 
 }
 
+//用户签到 POST
+async function dailySign(nickname) {
+    try {
+        let url = {
+            url: `${hostname}/crm/public/index.php/api/v1/dailySign`,
+            headers: {
+                "Host": host,
+                "token": ck[0],
+            },
+        };
+        let result = await httpPost(url, `签到`);
 
-//用户信息查询 POST
+        //console.log(result);
+        if (result?.error_code == 0) {
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `签到成功:${result.msg}🎉`);
+            await wait(2);
+        } else if (result?.error_code == 30001) {
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `签到失败:${result.msg}`);
+            //console.log(result);
+        }
+    } catch (error) {
+        //console.log(error);
+        console.log("卡夫味服务器卡爆啦");
+    }
+
+}
+
+
+//用户分享 POST
 async function share(nickname) {
     try {
         let url = {
@@ -112,10 +141,10 @@ async function share(nickname) {
 
         //console.log(result);
         if (result?.error_code == 0) {
-            DoubleLog(`账号[` + Number(i + 1) + `]` + `用户[` + nickname + `]执行分享成功:${result.msg}🎉`);
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `执行分享成功:${result.msg}🎉`);
             await wait(2);
         } else {
-            console.log(`账号[` + Number(i + 1) + `]` + `用户[` + nickname + `]执行分享失败${result.msg}`);
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `执行分享失败${result.msg}`);
             //console.log(result);
         }
     } catch (error) {
