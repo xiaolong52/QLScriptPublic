@@ -53,7 +53,7 @@ async function start() {
     //    await $.wait(2 * 1000);
     //}
 
-    await newstart("测试", userinfo, 2)
+    await newstart("兑换", userinfo, 2)
 
 }
 
@@ -91,7 +91,7 @@ async function userinfo() {
 }
 
 
-//用户信息查询
+//兑换
 async function exchange(nickname) {
     try {
         let url = {
@@ -109,10 +109,10 @@ async function exchange(nickname) {
 
         //console.log(result);
         if (result?.error_code == 0) {
-            console.log(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换成功🎉`);
+            DoubleLog(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换成功🎉`);
             await wait(2);
-        } else if (result?.error_code == 30005) {
-            DoubleLog(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换:${result.msg},兑换失败`);
+        } else if (result?.error_code == 80005) {
+            console.log(`账号[` + Number(i + 1) + `]` + `用户为:[` + nickname + `]兑换:${result.msg},兑换失败`);
         } else {
             console.log(`账号[` + Number(i + 1) + `]用户为:[` + nickname + `]兑换失败!`);
             //console.log(result);
