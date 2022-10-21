@@ -212,18 +212,19 @@ async function share(shareid) {
  *内部互助    httpPost  看你的请求头
  */  //循环助力 第二个账号助力第一个账号的链接 依次类推 最后一个账号被账号一助力
 async function recordshare(ckArr) {
-    try {
-        let url = {
-            url: `${hostname}/crm/public/index.php/api/v1/recordScoreShare`,
-            headers: {
-                "Host": host,
-                "token": ck[0],
+    if (i + 1 !== ckArr.length) {
+        try {
+            let url = {
+                url: `${hostname}/crm/public/index.php/api/v1/recordScoreShare`,
+                headers: {
+                    "Host": host,
+                    "token": ck[0],
 
-            },
-            body: sharecode[i + 1]
-        };
-        let result = await httpPost(url, `内部互助`);
-        if (i + 1 !== ckArr.length) {
+                },
+                body: sharecode[i + 1]
+            };
+            let result = await httpPost(url, `内部互助`);
+
             if (result?.error_code == 0) {
                 console.log(`账号[` + Number(i + 2) + `]个账号被助力成功:${result.msg} 🎉`);
                 await wait(1);
@@ -231,12 +232,13 @@ async function recordshare(ckArr) {
                 console.log(`内部互助: 失败 ❌ 了呢,原因未知!`);
                 //console.log(result);
             }
-        }
-        //console.log(result);
 
-    } catch (error) {
-        //console.log(error);
-        console.log("卡夫亨服务器卡爆啦");
+            //console.log(result);
+
+        } catch (error) {
+            //console.log(error);
+            console.log("卡夫亨服务器卡爆啦");
+        }
     }
     if (i + 1 == ckArr.length) {
         try {
