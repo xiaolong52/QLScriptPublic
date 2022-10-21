@@ -18,7 +18,7 @@ let hostname = 'https://' + host;
 let sharecode = [];
 //---------------------------------------------------//
 async function tips(ckArr) {
-    DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
+    //DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
     DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
 }
@@ -43,6 +43,16 @@ async function newstart(name, taskname, time) {  //任务名 函数名 等待时
         await $.wait(time * 1000);
     }
 }
+async function newstart1(name, taskname, ckArr) {  //任务名 函数名 等待时间
+    //let ckArr = await checkEnv(ckStr, "kfh_data");  //检查CK
+    console.log("\n📌📌📌📌📌📌📌📌" + name + "📌📌📌📌📌📌📌📌");
+    for (i = 0; i < ckArr.length; i++) {
+        ck = ckArr[i].split("&");                 //单账号多变量分割符,如果一个账号需要user和token两个变量,那么则输入user1&token1@user2&token2...   
+        //let CK = ckArr[i]
+        await taskname(ckArr);
+        //await $.wait(time * 1000);
+    }
+}
 //-------------------------------------------------------------------------------封装循环测试
 
 async function start() {
@@ -53,10 +63,10 @@ async function start() {
     //    await userinfo();
     //    await $.wait(2 * 1000);
     //}
-
+    let ckArr = await checkEnv(ckStr, "kfh_data");
     await newstart("用户信息查询", userinfo, 2)
     await newstart("获取分享ID", getshareid, 2)
-    await newstart("内部互助", recordshare, 2)
+    await newstart1("内部互助", recordshare, ckArr)
 
 }
 
@@ -201,7 +211,7 @@ async function share(shareid) {
 /**
  *内部互助    httpPost  看你的请求头
  */  //循环助力 第二个账号助力第一个账号的链接 依次类推 最后一个账号被账号一助力
-async function recordshare() {
+async function recordshare(ckArr) {
     try {
         let url = {
             url: `${hostname}/crm/public/index.php/api/v1/recordScoreShare`,
@@ -213,20 +223,47 @@ async function recordshare() {
             body: sharecode[i + 1]
         };
         let result = await httpPost(url, `内部互助`);
-
-        //console.log(result);
-        if (result?.error_code == 0) {
-            console.log(`账号[` + Number(i + 2) + `]个账号被助力成功:${result.msg} 🎉`);
-            await wait(1);
-        } else {
-            console.log(`内部互助: 失败 ❌ 了呢,原因未知!`);
-            //console.log(result);
+        if (i + 1 !== ckArr.length) {
+            if (result?.error_code == 0) {
+                console.log(`账号[` + Number(i + 2) + `]个账号被助力成功:${result.msg} 🎉`);
+                await wait(1);
+            } else {
+                console.log(`内部互助: 失败 ❌ 了呢,原因未知!`);
+                //console.log(result);
+            }
         }
+        //console.log(result);
+
     } catch (error) {
         //console.log(error);
         console.log("卡夫亨服务器卡爆啦");
     }
+    if (i + 1 == ckArr.length) {
+        try {
+            let url = {
+                url: `${hostname}/crm/public/index.php/api/v1/recordScoreShare`,
+                headers: {
+                    "Host": host,
+                    "token": ck[0],
 
+                },
+                body: sharecode[0]
+            };
+            let result = await httpPost(url, `内部互助`);
+
+            //console.log(result);
+            if (result?.error_code == 0) {
+                console.log(`账号最后一位助力首账号成功:${result.msg} 🎉`);
+                await wait(1);
+            } else {
+                console.log(`内部互助: 失败 ❌ 了呢,原因未知!`);
+                //console.log(result);
+            }
+        } catch (error) {
+            //console.log(error);
+            console.log("卡夫亨服务器卡爆啦");
+        }
+    }
 
 }
 
