@@ -17,7 +17,7 @@ let hostname = 'https://' + host;
 //---------------------------------------------------//
 async function tips(ckArr) {
     //DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
-    console.log(`\n 自动兑换奖品 自行设置定时`);
+    console.log(`\n QQ频道https://qun.qq.com/qqweb/qunpro/share?inviteCode=1W7f4gR \n QQ群862839604 自动兑换奖品 自行设置定时`);
     console.log(`\n============= 共找到 ${ckArr.length} 个账号 =============`);
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
 }
