@@ -33,7 +33,7 @@ async function tips(ckArr) {
 
 //---------------------------------------------------------------------------------封装循环测试
 async function newstart(name, taskname, time) {  //任务名 函数名 等待时间
-    let ckArr = await checkEnv(ckStr, "yqy_data");  //检查CK
+    let ckArr = await checkEnv(ckStr, "demo_data");  //检查CK
     console.log("\n📌📌📌📌📌📌📌📌" + name + "📌📌📌📌📌📌📌📌");
     for (i = 0; i < ckArr.length; i++) {
         ck = ckArr[i].split("&");                 //单账号多变量分割符,如果一个账号需要user和token两个变量,那么则输入user1&token1@user2&token2...   
