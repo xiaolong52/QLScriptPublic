@@ -1,16 +1,17 @@
 /**
  *
- * 自建模板
+ * gqcq修复广汽传祺
  *
- * cron 0 0,7 * * *  demo.js         
+ * cron 0 0,7 * * *  gqcq.js         
  *  多账号并行执行任务模板
+ * 移植 yml频道banxiaya脚本
  */
 //=====================================================//
-const $ = new Env("演示模板");
+const $ = new Env("广汽传祺");
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1
 const debug = 0
-let ckStr = ($.isNode() ? process.env.gqcq_data : $.getdata('gqcq_data')) || '';  //检测CK  外部
+let ckStr = ($.isNode() ? process.env.gqcq_data : $.getdata('gqcq_data')) || '';
 let msg, ck;
 let host = 'gsp.gacmotor.com';
 let hostname = 'https://' + host;
@@ -23,67 +24,33 @@ let add_comment_text_arr = ['感谢推荐的电影呢', '有时间一定看看�
 let ram_num = randomInt(1, 5);
 let text = textarr[ram_num];
 let add_comment_text = add_comment_text_arr[ram_num];
-let cq_headers = {
-    'token': ck,
-    'reqTs': ts,
-    'reqSign': reqSign,
-    'reqNonc': reqNonc,
-    'channel': 'unknown',
-    'platformNo': 'Android',
-    'osVersion': '10',
-    'version': '3.8.0',
-    'imei': 'a4dad7a1b1f865bc',
-    'imsi': 'unknown',
-    'deviceModel': 'MI 8',
-    'deviceType': 'Android',
-    'registrationID': '100d855909bb3584777',
-    'verification': 'signature',
-    'Host': 'gsp.gacmotor.com',
-    'User-Agent': 'okhttp/3.10.0',
-}
-let cq_headers2 = {
-    "token": ck,
-    "Host": "gsp.gacmotor.com",
-    "Origin": "https://gsp.gacmotor.com",
-    "Accept": "application/json, text/plain, */*",
-    "Cache-Control": "no-cache",
-    "Sec-Fetch-Dest": "empty",
-    "X-Requested-With": "com.cloudy.component",
-    "Sec-Fetch-Site": "same-origin",
-    "Sec-Fetch-Mode": "cors",
-    "Referer": "https://gsp.gacmotor.com/h5/html/draw/index.html",
-    "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Content-Type": "application/x-www-form-urlencoded",
-};
 //---------------------------------------------------//
 async function tips(ckArr) {
-    //DoubleLog(`当前脚本版本${Version}\n📌,如果脚本版本不一致请及时更新`);
     DoubleLog(`\n============= 共找到 ${ckArr.length} 个账号 =============`);
     debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
 }
 !(async () => {
-    let ckArr = await checkEnv(ckStr, "gqcq_data");  //检查CK
-    await tips(ckArr);  //脚本提示
-    await start(); //开始任务
-    await SendMsg(msg); //发送通知
+    let ckArr = await checkEnv(ckStr, "gqcq_data");  K
+    await tips(ckArr);  
+    await start(); 
+    await SendMsg(msg); 
 
 })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done());
 
 
-//---------------------------------------------------------------------------------封装循环测试
-async function newstart(name, taskname, time) {  //任务名 函数名 等待时间
-    let ckArr = await checkEnv(ckStr, "gqcq_data");  //检查CK
+//---------------------------------------------------------------------------------
+async function newstart(name, taskname, time) {  
+    let ckArr = await checkEnv(ckStr, "gqcq_data"); 
     console.log("\n📌📌📌📌📌📌📌📌" + name + "📌📌📌📌📌📌📌📌");
     for (i = 0; i < ckArr.length; i++) {
-        ck = ckArr[i].split("&");                 //单账号多变量分割符,如果一个账号需要user和token两个变量,那么则输入user1&token1@user2&token2...   
-        //let CK = ckArr[i]
+        ck = ckArr[i].split("&");                
         await taskname();
         await $.wait(time * 1000);
     }
 }
-//-------------------------------------------------------------------------------封装循环测试
+//-------------------------------------------------------------------------------
 
 async function start() {
 
