@@ -52,7 +52,7 @@ async function newstart(name, taskname, time) {  //任务名 函数名 等待时
 async function start() {
     await newstart("签到", sign, 2)
     await newstart("文章", getnewslist, 2)
-    await newstart("帖子", gettielist, 2)
+    //await newstart("帖子", gettielist, 2)
 
 }
 
@@ -110,17 +110,17 @@ async function getnewslist() {
             await wait(2);
             
             artID0 = result.list[0].contentid
-            await artReply(artID0);
+            //await artReply(artID0);
             await artShare(artID0)
             await wait(2);
 
             artID1 = result.list[2].contentid
-            await artReply(artID1);
+            //await artReply(artID1);
             await artShare(artID1)
             await wait(2);
 
             artID2 = result.list[4].contentid
-            await artReply(artID2);
+            //await artReply(artID2);
             await artShare(artID2)
         } else {
             console.log(`获取评论文章失败！`);
@@ -224,15 +224,15 @@ async function gettielist() {
         if (result?.code == 200) {
             //console.log(`获取评论文章成功🎉`);
             tieID0 = result.data[0].id
-            await tie(tieID0);
+            //await tie(tieID0);
             await wait(2);
 
             tieID1 = result.data[2].id
-            await tie(tieID1);
+            //await tie(tieID1);
             await wait(2);
 
             tieID2 = result.data[4].id
-            await tie(tieID2);
+            //await tie(tieID2);
         } else {
             console.log(`获取帖子列表失败！`);
             //console.log(result);
