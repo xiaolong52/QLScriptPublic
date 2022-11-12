@@ -6,7 +6,7 @@
  *  多账号并行执行任务模板
  */
 //=====================================================//
-const $ = new Env("十堰头条/月低保9");
+const $ = new Env("十堰头条/月低保4.5");
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1
 const debug = 0
