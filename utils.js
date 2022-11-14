@@ -21,7 +21,7 @@ module.exports = {
     yiyan: yiyan,
     wait: wait,
     httpRequest: httpRequest,
-
+    //httpRequestV2: httpRequestV2,
     base64_encode: base64_encode,
     base64_decode: base64_decode,
     MD5_Encrypt: MD5_Encrypt,
@@ -37,7 +37,7 @@ var request = require("request");
 /**
  * 测试get post合一   10-9改 request
  */
-async function httpRequest(name, options) {
+async function httpRequestV2(name, options) {
     return new Promise((resolve) => {
         if (!name) {
             let tmp = arguments.callee.toString();
@@ -86,7 +86,47 @@ async function httpRequest(name, options) {
     });
 }
 
+/**
+ * 网络请求 (get, post等)
+ */
+async function httpRequest(postOptionsObject, tip, timeout = 3) {
+    return new Promise((resolve) => {
 
+        let Options = postOptionsObject;
+        let request = require('request');
+        if (!tip) {
+            let tmp = arguments.callee.toString();
+            let re = /function\s*(\w*)/i;
+            let matches = re.exec(tmp);
+            tip = matches[1];
+        }
+        if (debug) {
+            console.log(`\n 【debug】=============== 这是 ${tip} 请求 信息 ===============`);
+            console.log(Options);
+        }
+
+        request(Options, async (err, resp, data) => {
+            try {
+                if (debug) {
+                    console.log(`\n\n 【debug】===============这是 ${tip} 返回数据==============`);
+                    console.log(data);
+                    console.log(`\n 【debug】=============这是 ${tip} json解析后数据============`);
+                    console.log(JSON.parse(data));
+                }
+                let result = JSON.parse(data);
+                if (!result) return;
+                resolve(result);
+            } catch (e) {
+                console.log(err, resp);
+                console.log(`\n ${tip} 失败了!请稍后尝试!!`);
+                msg = `\n ${tip} 失败了!请稍后尝试!!`
+            } finally {
+                resolve();
+            }
+        }), timeout
+
+    });
+}
 
 /**
  * 一言
@@ -128,7 +168,7 @@ function wait(n) {
 /**
  * 变量检查
  */
-async function checkEnv(ck, name) {
+async function checkEnvV2(ck, name) {
     return new Promise((resolve) => {
         let ckArr = [];
         if (ck) {
@@ -149,6 +189,23 @@ async function checkEnv(ck, name) {
             console.log(`未填写变量 ${name} ,请仔细阅读脚本说明!`);
         }
     });
+}
+async function checkEnv() {
+    if (userCookie) {
+        // console.log(userCookie);
+        let e = envSplitor[0];
+        for (let o of envSplitor)
+            if (userCookie.indexOf(o) > -1) {
+                e = o;
+                break;
+            }
+        for (let n of userCookie.split(e)) n && userList.push(new UserInfo(n));
+        userCount = userList.length;
+    } else {
+        console.log("未找到CK");
+        return;
+    }
+    return console.log(`共找到${userCount}个账号`), true;//true == !0
 }
 
 
