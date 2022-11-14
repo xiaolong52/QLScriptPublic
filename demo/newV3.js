@@ -120,7 +120,7 @@ async function checkEnv() {
 // 网络请求 (get, post等)
 async function httpRequest(postOptionsObject, tip, timeout = 3) { return new Promise((resolve) => { let Options = postOptionsObject; let request = require('request'); if (!tip) { let tmp = arguments.callee.toString(); let re = /function\s*(\w*)/i; let matches = re.exec(tmp); tip = matches[1] } if (debug) { console.log(`\n【debug】===============这是${tip}请求信息===============`); console.log(Options) } request(Options, async (err, resp, data) => { try { if (debug) { console.log(`\n\n【debug】===============这是${tip}返回数据==============`); console.log(data); console.log(`\n【debug】=============这是${tip}json解析后数据============`); console.log(JSON.parse(data)) } let result = JSON.parse(data); if (!result) return; resolve(result) } catch (e) { console.log(err, resp); console.log(`\n ${tip}失败了!请稍后尝试!!`); msg = `\n ${tip}失败了!请稍后尝试!!` } finally { resolve() } }), timeout }) }
 // 等待 X 秒
-function wait(n){return new Promise(function(resolve){setTimeout(resolve,n*1000)})}
+function wait(n) { return new Promise(function (resolve) { setTimeout(resolve, n * 1000) }) }
 // 双平台log输出
 function DoubleLog(data) { if ($.isNode()) { if (data) { console.log(`${data}`); msg += `\n${data}` } } else { console.log(`${data}`); msg += `\n${data}` } }
 // 发送消息
