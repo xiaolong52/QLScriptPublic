@@ -113,7 +113,7 @@ async function checkEnv() {
         console.log("未找到CK");
         return;
     }
-    return console.log(`共找到${userCount}个账号`), !0;
+    return console.log(`共找到${userCount}个账号`), !0;//true
 }
 
 // =========================================== 不懂不要动 =========================================================
