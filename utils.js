@@ -1,6 +1,7 @@
 /* 
 *	感谢yml大佬js封装库  当前版本V0.0.1
 */
+let utilsVersion = "0.0.1"
 module.exports = {
     phone_num: phone_num,//手机号中间遮挡
     randomszdx: randomszdx,//随机 数字 + 大写字母 生成
