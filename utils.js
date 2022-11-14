@@ -1,245 +1,28 @@
 /* 
-10-9	第一版完成，改用 request，支持青龙
-
+*	感谢yml大佬js封装库  当前版本V0.0.1
 */
 module.exports = {
-    checkEnv: checkEnv,
-    phone_num: phone_num,
-    randomszdx: randomszdx,
-    randomszxx: randomszxx,
-    randomInt: randomInt,
-    ts13: ts13,
-    ts10: ts10,
-    tmtoDate: tmtoDate,
-    local_hours: local_hours,
-    local_minutes: local_minutes,
-    local_year: local_year,
-    local_month: local_month,
-    local_month_two: local_month_two,
-    local_day: local_day,
-    local_day_two: local_day_two,
-    yiyan: yiyan,
-    wait: wait,
-    httpRequest: httpRequest,
-    //httpRequestV2: httpRequestV2,
-    base64_encode: base64_encode,
-    base64_decode: base64_decode,
-    MD5_Encrypt: MD5_Encrypt,
-    SHA256_Encrypt: SHA256_Encrypt,
-    SHA1_Encrypt: SHA1_Encrypt,
-    RSA_Encrypt: RSA_Encrypt,
-
+    phone_num: phone_num,//手机号中间遮挡
+    randomszdx: randomszdx,//随机 数字 + 大写字母 生成
+    randomszxx: randomszxx,//随机 数字 + 小写字母 生成
+    randomInt: randomInt,//随机整数生成
+    ts13: ts13,//时间戳 13位
+    ts10: ts10,//时间戳 10位
+    tmtoDate: tmtoDate,//时间戳 转 日期
+    local_hours: local_hours,//获取当前小时数
+    local_minutes: local_minutes,//获取当前分钟数
+    local_year: local_year,//获取当前年份 2022
+    local_month: local_month,//获取当前月份(数字)  5月
+    local_month_two: local_month_two,//获取当前月份(数字)  05月 补零
+    local_day: local_day,//获取当前天数(数字)  5日
+    local_day_two: local_day_two,//获取当前天数  05日 补零
+    RSA_Encrypt: RSA_Encrypt,//RSA公钥加密  传参(数据,key) , 返回 base64格式
+    base64_encode: base64_encode,//base64 编码
+    base64_decode: base64_decode,//base64 解码
+    SHA1_Encrypt: SHA1_Encrypt,//SHA1加密
+    SHA256_Encrypt: SHA256_Encrypt,//SHA256加密
+    MD5_Encrypt: MD5_Encrypt,//md5 加密
 };
-
-var request = require("request");
-
-//
-/**
- * 测试get post合一   10-9改 request
- */
-async function httpRequestV2(name, options) {
-    return new Promise((resolve) => {
-        if (!name) {
-            let tmp = arguments.callee.toString();
-            let re = /function\s*(\w*)/i;
-            let matches = re.exec(tmp);
-            name = matches[1];
-        }
-
-        request(options, function (error, response) {
-            if (error) throw new Error(error);
-            // response.body
-            let data = response.body;
-            try {
-                // console.log(typeof (data));
-                if (typeof data == "string") {
-                    if (isJsonString(data)) {
-                        let result = JSON.parse(data);
-                        resolve(result);
-                    } else {
-                        let result = data;
-                        resolve(result);
-                    }
-                    function isJsonString(str) {
-                        if (typeof str == "string") {
-                            try {
-                                if (typeof JSON.parse(str) == "object") {
-                                    return true;
-                                }
-                            } catch (e) {
-                                return false;
-                            }
-                        }
-                        return false;
-                    }
-                } else {
-                    let result = data;
-                    resolve(result);
-                }
-            } catch (e) {
-                console.log(error, response);
-                console.log(`\n ${name} 失败了!请稍后尝试!!`);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-/**
- * 网络请求 (get, post等)
- */
-async function httpRequest(postOptionsObject, tip, timeout = 3) {
-    return new Promise((resolve) => {
-
-        let Options = postOptionsObject;
-        let request = require('request');
-        if (!tip) {
-            let tmp = arguments.callee.toString();
-            let re = /function\s*(\w*)/i;
-            let matches = re.exec(tmp);
-            tip = matches[1];
-        }
-        if (debug) {
-            console.log(`\n 【debug】=============== 这是 ${tip} 请求 信息 ===============`);
-            console.log(Options);
-        }
-
-        request(Options, async (err, resp, data) => {
-            try {
-                if (debug) {
-                    console.log(`\n\n 【debug】===============这是 ${tip} 返回数据==============`);
-                    console.log(data);
-                    console.log(`\n 【debug】=============这是 ${tip} json解析后数据============`);
-                    console.log(JSON.parse(data));
-                }
-                let result = JSON.parse(data);
-                if (!result) return;
-                resolve(result);
-            } catch (e) {
-                console.log(err, resp);
-                console.log(`\n ${tip} 失败了!请稍后尝试!!`);
-                msg = `\n ${tip} 失败了!请稍后尝试!!`
-            } finally {
-                resolve();
-            }
-        }), timeout
-
-    });
-}
-
-/**
- * 一言
- */
-function yiyan() {
-    return new Promise((resolve) => {
-        var options = {
-            method: "GET",
-            url: "https://v1.hitokoto.cn/",
-            headers: {},
-        };
-        request(options, function (error, response) {
-            if (error) throw new Error(error);
-            try {
-                // console.log(data);
-                let data = JSON.parse(response.body);
-                let data_ = `[一言]: ${data.hitokoto}  by--${data.from}`;
-                console.log(data_);
-                msg += `\n    ${data}`;
-                // return data_
-            } catch (e) {
-                // console.log(error, response);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
-
-/**
- * 等待 X 秒
- */
-function wait(n) {
-    return new Promise(function (resolve) {
-        setTimeout(resolve, n * 1000);
-    });
-}
-
-/**
- * 变量检查
- */
-async function checkEnvV2(ck, name) {
-    return new Promise((resolve) => {
-        let ckArr = [];
-        if (ck) {
-            if (ck.indexOf("@") !== -1) {
-                ck.split("@").forEach((item) => {
-                    ckArr.push(item);
-                });
-            } else if (ck.indexOf("\n") !== -1) {
-                ck.split("\n").forEach((item) => {
-                    ckArr.push(item);
-                });
-            } else {
-                ckArr.push(ck);
-            }
-            resolve(ckArr);
-        } else {
-            console.log();
-            console.log(`未填写变量 ${name} ,请仔细阅读脚本说明!`);
-        }
-    });
-}
-async function checkEnv() {
-    if (userCookie) {
-        // console.log(userCookie);
-        let e = envSplitor[0];
-        for (let o of envSplitor)
-            if (userCookie.indexOf(o) > -1) {
-                e = o;
-                break;
-            }
-        for (let n of userCookie.split(e)) n && userList.push(new UserInfo(n));
-        userCount = userList.length;
-    } else {
-        console.log("未找到CK");
-        return;
-    }
-    return console.log(`共找到${userCount}个账号`), true;//true == !0
-}
-
-
-
-/**
- * 获取远程版本
- * http://yml-gitea.ml:2233/yml/JavaScript-yml/raw/branch/master/${name}.js
- * https://raw.gh.fakev.cn/yml2213/javascript/master/${name}/${name}.js
- */
-function Version_Check(name, type) {
-    return new Promise((resolve) => {
-        if (type == 1) {
-            data = `https://raw.gh.fakev.cn/yml2213/javascript/master/${name}/${name}.js`;
-        } else if (type == 2) {
-            data = `http://yml-gitea.ml:2233/yml/JavaScript-yml/raw/branch/master/${name}.js`;
-        }
-        let url = {
-            url: data,
-        };
-        $.get(
-            url,
-            async (err, resp, data) => {
-                try {
-                    VersionCheck = resp.body.match(/VersionCheck = "([\d\.]+)"/)[1];
-                } catch (e) {
-                    console.log(e, resp);
-                } finally {
-                    resolve(VersionCheck);
-                }
-            },
-            (timeout = 3)
-        );
-    });
-}
 
 /**
  * 手机号中间遮挡
