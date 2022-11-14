@@ -51,7 +51,8 @@ class UserInfo {
     constructor(str) {
         this.index = ++userIdx;
         this.ck = str.split('&')[0];
-
+        //let ck = str.split('&')
+        //this.data1 = ck[0]
         this.host = "echo.apipost.cn";
         this.hostname = "https://" + this.host;
 
