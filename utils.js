@@ -3,6 +3,7 @@
 */
 let utilsVersion = "0.0.1"
 module.exports = {
+    version: version,//版本
     phone_num: phone_num,//手机号中间遮挡
     randomszdx: randomszdx,//随机 数字 + 大写字母 生成
     randomszxx: randomszxx,//随机 数字 + 小写字母 生成
