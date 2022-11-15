@@ -24,7 +24,12 @@ module.exports = {
     SHA256_Encrypt: SHA256_Encrypt,//SHA256加密
     MD5_Encrypt: MD5_Encrypt,//md5 加密
 };
-
+/**
+ * 版本号
+ */
+function version(){
+    return utilsVersion;
+}
 /**
  * 手机号中间遮挡
  */
