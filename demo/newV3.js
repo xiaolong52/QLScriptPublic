@@ -87,14 +87,20 @@ class UserInfo {
 
 !(async () => {
     if (!(await checkEnv())) return;
-    if (userList.length > 0) {
-        if (utilsState) {
-            utilsCheck("utils.js"); await wait(5);
-            utils = require("./utils");
-            if (startState) { await start() }
-        } else await start();
-
+    if (utilsState) {
+        utilsCheck("utils.js"); await wait(5);
+        utils = require("./utils");
+        if (startState) {
+            if (userList.length > 0) {
+                await start();
+            }
+        }
+    } else {
+        if (userList.length > 0) {
+            await start();
+        }
     }
+
     await SendMsg(msg);
 })()
     .catch((e) => console.log(e))
