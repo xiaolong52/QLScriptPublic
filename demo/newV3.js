@@ -89,7 +89,8 @@ class UserInfo {
 !(async () => {
     if (!(await checkEnv())) return;
     if (utilsState) {
-        utilsCheck("utils.js"); await wait(5);
+        await utilsCheck("utils.js");
+        await wait(5);
         utils = require("./utils");
         if (startState) {
             if (userList.length > 0) {
