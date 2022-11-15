@@ -29,6 +29,7 @@ let userCookie = ($.isNode() ? process.env[ckName] : $.getdata(ckName)) || '';
 let userList = [];
 let userIdx = 0;
 let userCount = 0;
+let utilsState = 0;
 //---------------------- 自定义变量区域 -----------------------------------
 //---------------------------------------------------------
 
@@ -115,9 +116,9 @@ async function checkEnv() {
     }
     return console.log(`共找到${userCount}个账号`), true;//true == !0
 }
-
 // =========================================== 不懂不要动 =========================================================
 // 依赖检测
+if (utilsState){utilsCheck("utils.js")}
 async function utilsCheck(file_name){const fs=require("fs");const path=require("path");var request=require("request");dirPath=path.resolve(__dirname);let files=fs.readdirSync(dirPath);if(files.indexOf(file_name)>-1){console.log(`正在检测依赖!当前目录[${dirPath}]依赖${file_name}文件状态正常!`);utils=require("./utils");utilsVersionCheck();return utils}else{console.log(`正在检测依赖!当前目录[${dirPath}]未找到${file_name},将下载到该目录!`);utilsWrite(file_name)}function utilsVersionCheck(){var options={method:"GET",url:"https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/utils.js",headers:{},};request(options,function(error,response){if(error)throw new Error(error);let utilsVersionNew=response.body.match(/utilsVersion = "([\d\.]+)"/)[1];console.log(utilsVersionNew);utils=require("./utils");utilsVersionNow=utils.version();console.log(utilsVersionNow);if(utilsVersionNew==utilsVersionNow){console.log("正在进行依赖版本检测:无更新")}else{console.log("检测到最新版本"+utilsVersionNew+",即将为您更新最新依赖");write_utils("utils.js")}})}function utilsWrite(file_name){const fs=require("fs");const path=require("path");dirPath=path.resolve(__dirname);var options={method:"GET",url:"https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/utils.js",headers:{},};request(options,function(error,response){if(error)throw new Error(error);text=response.body;fs.writeFile(`${dirPath}/${file_name}`,text,`utf-8`,(err)=>{if(err){console.log(`目录[${dirPath}]${file_name}文件写入失败`)}console.log(`\n目录[${dirPath}]${file_name}文件写入成功请再次运行脚本!`)})})}}
 // 网络请求 (get, post等)
 async function httpRequest(postOptionsObject, tip, timeout = 3) { return new Promise((resolve) => { let Options = postOptionsObject; let request = require('request'); if (!tip) { let tmp = arguments.callee.toString(); let re = /function\s*(\w*)/i; let matches = re.exec(tmp); tip = matches[1] } if (debug) { console.log(`\n【debug】===============这是${tip}请求信息===============`); console.log(Options) } request(Options, async (err, resp, data) => { try { if (debug) { console.log(`\n\n【debug】===============这是${tip}返回数据==============`); console.log(data); console.log(`\n【debug】=============这是${tip}json解析后数据============`); console.log(JSON.parse(data)) } let result = JSON.parse(data); if (!result) return; resolve(result) } catch (e) { console.log(err, resp); console.log(`\n ${tip}失败了!请稍后尝试!!`); msg = `\n ${tip}失败了!请稍后尝试!!` } finally { resolve() } }), timeout }) }
