@@ -22,7 +22,7 @@ const ckName = "demo_data";
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1;		 //0为关闭通知,1为打开通知,默认为1
 let debug = 0;           //Debug调试   0关闭  1开启
-let utilsState = 1;      //是否开启依赖 0关闭   1开启
+let utilsState = 0;      //是否开启依赖 0关闭   1开启
 let envSplitor = ["@", "\n"];
 let ck = msg = '';       //let ck,msg
 let host, hostname;
