@@ -1,7 +1,7 @@
 /* 
 *	感谢yml大佬js封装库  当前版本V0.0.1
 */
-let utilsVersion = "0.0.1"
+let utilsVersion = "0.0.2"
 module.exports = {
     version: version,//版本
     phone_num: phone_num,//手机号中间遮挡
