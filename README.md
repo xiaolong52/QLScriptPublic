@@ -12,6 +12,9 @@ ql repo https://ghproxy.com/https://github.com/zhaoshicong/QLScriptPublic.git "w
 https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/newV3.js
 
 =====================
+
+仓库脚本适配青龙面板V2.11.3左右版本,其他未测试!
+
 青碳行.js -> 添加成功
 
 读特 -> 添加成功
