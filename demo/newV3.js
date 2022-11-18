@@ -40,7 +40,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.user_info('用户信息'));
-        await wait(1);
+        //await wait(1); //延迟
     }
     await Promise.all(taskall);
 
