@@ -1,12 +1,17 @@
 # QLScriptPublic
 青龙脚本公共库
 =====================
-拉库命令
+#拉库命令
 
 ql repo https://ghproxy.com/https://github.com/zhaoshicong/QLScriptPublic.git "wool" "demo|backup" "user_agents.js|utils.js"
 
 =====================
 
+#脚本模板
+
+https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/newV3.js
+
+=====================
 青碳行.js -> 添加成功
 
 读特 -> 添加成功
