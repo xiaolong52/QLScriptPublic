@@ -23,7 +23,7 @@ const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1;		 //0为关闭通知,1为打开通知,默认为1
 let debug = 0;           //Debug调试   0关闭  1开启
 let utilsState = 0;      //是否开启依赖 0关闭   1开启
-let envSplitor = ["@", "\n"];
+let envSplitor = ["@", "\n"]; //多账号分隔符
 let ck = msg = '';       //let ck,msg
 let host, hostname;
 let userCookie = ($.isNode() ? process.env[ckName] : $.getdata(ckName)) || '';
@@ -52,7 +52,7 @@ async function start() {
 class UserInfo {
     constructor(str) {
         this.index = ++userIdx;
-        this.ck = str.split('&')[0];
+        this.ck = str.split('&')[0]; //单账号多变量分隔符
         //let ck = str.split('&')
         //this.data1 = ck[0]
         this.host = "echo.apipost.cn";
