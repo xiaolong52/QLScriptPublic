@@ -1,17 +1,16 @@
 /**
  * 今日越城
- * cron 15 7,9 * * *  jryc.js
- * 
+ * cron 10 7 * * *  jryc.js
+ *
  * 2022/11/21 执行签到,阅读,,点赞,分享
  * ========= 青龙--配置文件 ===========
  * # 项目名称
- * export jryc_data='xxxxx @ xxxxx
+ * export jryc_data='xxxxx @ xxxxx'
  * 
  * 多账号用 换行 或 @ 分割
  * 抓包 vapp.tmuyun.com , 找到 header中的X-SESSION-ID 即可
  * ====================================
- * BUG反馈群 862839604
- *   
+ * 交流群/BUG反馈 862839604
  */
 
 
@@ -262,7 +261,7 @@ class UserInfo {
             let result = await httpRequest(options, '点赞文章');
             //console.log(result);
             if (result.code == 0) {
-                DoubleLog(`账号[${this.index}],点赞成功:[` + articleId + `]`);
+                DoubleLog(`账号[${this.index}],点赞文章成功:[` + articleId + `]`);
             } else {
                 DoubleLog(`账号[${this.index}],用户查询:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
