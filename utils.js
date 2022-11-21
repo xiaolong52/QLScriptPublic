@@ -1,9 +1,10 @@
 /* 
-*	感谢yml大佬js封装库  当前版本V0.0.1
+*	感谢yml大佬js封装库  当前版本V0.0.2
 */
-let utilsVersion = "0.0.1"
+let utilsVersion = "0.0.2"
 module.exports = {
     version: version,//版本
+    guid: guid,//根据时间戳生成GUID 8-4-4-4-12
     phone_num: phone_num,//手机号中间遮挡
     randomszdx: randomszdx,//随机 数字 + 大写字母 生成
     randomszxx: randomszxx,//随机 数字 + 小写字母 生成
@@ -25,12 +26,24 @@ module.exports = {
     SHA256_Encrypt: SHA256_Encrypt,//SHA256加密
     MD5_Encrypt: MD5_Encrypt,//md5 加密
 };
+
 /**
  * 版本号
  */
-function version(){
+function version() {
     return utilsVersion;
 }
+
+/**
+ * 随机UUID(由时间戳生成) 8-4-4-4-12
+ */
+function guid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
 /**
  * 手机号中间遮挡
  */
