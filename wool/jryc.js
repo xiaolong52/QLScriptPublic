@@ -2,7 +2,7 @@
  * 今日越城
  * cron 10 7 * * *  jryc.js
  *
- * 2022/11/21 执行签到,阅读,点赞,分享
+ * 2022/11/21 执行签到,阅读,点赞,分享,本地服务
  * ========= 青龙--配置文件 ===========
  * # 项目名称
  * export jryc_data='xxxxx @ xxxxx'
@@ -59,11 +59,17 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         for (let i = 0; i <= 5; i++) {
-            taskall.push(await user.task_share('执行分享'));
+            taskall.push(await user.task_share("3", "分享"));
         }
     }
     await Promise.all(taskall);
 
+    console.log('\n================== 本地服务 ==================\n');
+    taskall = [];
+    for (let user of userList) {
+        taskall.push(await user.task_share("6", "本地服务"));
+    }
+    await Promise.all(taskall);
 
 }
 
@@ -271,7 +277,7 @@ class UserInfo {
         }
     }
 
-    async task_share() { // 分享文章
+    async task_share(mumberType, name) { // 分享文章3/使用本地服务6
         let host_data = `/api/user_mumber/doTask`
         let REQUEST_ID = utils.guid();
         let TIMESTAMP = utils.ts13();
@@ -294,14 +300,14 @@ class UserInfo {
                     Host: 'vapp.tmuyun.com',
                     Connection: 'Keep-Alive',
                 },
-                form: { memberType: '3', member_type: '3' }
+                form: { memberType: mumberType, member_type: mumberType }
             };
             //console.log(options);
-            let result = await httpRequest(options, "分享文章");
+            let result = await httpRequest(options, name);
             //console.log(result);
             if (result.code == 0) {
-                DoubleLog(`账号[${this.index}],分享文章成功`);
-                if (result.data) { `账号[${this.index}],分享文章执行完毕共获得:[${result.data.score_notify.integral}]` }
+                DoubleLog(`账号[${this.index}],` + name + `成功`);
+                if (result.data) { `账号[${this.index}],` + name + `执行完毕共获得:[${result.data.score_notify.integral}]` }
             } else {
                 DoubleLog(`账号[${this.index}],分享文章:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
@@ -310,8 +316,6 @@ class UserInfo {
             console.log(error);
         }
     }
-
-
 }
 
 !(async () => {
