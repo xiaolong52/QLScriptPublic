@@ -1,5 +1,4 @@
-# QLScriptPublic
-青龙脚本公共库
+# QLScriptPublic 青龙脚本公共库
 =====================
 # 拉库命令
 
