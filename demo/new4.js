@@ -5,7 +5,7 @@
  * 22/11/14   参考各位大佬的模板修改了这个模板V3
  * 22/11/15   参考各位大佬,建立了依赖库(时间戳,md5等算法)
  * 22/11/19   yml大佬的网络请求函数更新(判断返回体是否为json格式)
- * 22/11/22   取消依赖版本检测,自行拉文件
+ * 22/11/22   取消依赖库
  * ========= 青龙--配置文件 ===========
  * # 项目名称
  * export demo_data='token @ token'
@@ -21,6 +21,7 @@
 const $ = new Env("演示模板");
 const ckName = "demo_data";
 //-------------------- 一般不动变量区域 -------------------------------------
+const utils = require("./utils");
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1;		 //0为关闭通知,1为打开通知,默认为1
 let debug = 0;           //Debug调试   0关闭  1开启
@@ -31,7 +32,6 @@ let userCookie = ($.isNode() ? process.env[ckName] : $.getdata(ckName)) || '';
 let userList = [];
 let userIdx = 0;
 let userCount = 0;
-//const utils = require("./utils");
 //---------------------- 自定义变量区域 -----------------------------------
 //---------------------------------------------------------
 
