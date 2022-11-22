@@ -152,6 +152,7 @@ class UserInfo {
             if (result.code == 10000) {
                 DoubleLog(`账号[${this.index}]  果园ID: ${result.data.data.basisinfo.ts_id}`);
                 let tsId = result.data.data.basisinfo.ts_id
+                console.log("\n================== 领取水滴 ==================\n")
                 for (let i = 1; i <= 15; i++) {
                     await this.task_water(tsId, i)
                 }
