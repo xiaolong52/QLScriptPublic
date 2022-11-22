@@ -84,6 +84,7 @@ class UserInfo {
                 DoubleLog(`账号[${this.index}]  欢迎用户: ${result.data.phone_number}`);
                 let bdid = result.data.id
                 await this.task_bd(bdid);
+                await this.task_shareFriends(bdid);
                 await this.task_info('果园信息')
             } else {
                 DoubleLog(`账号[${this.index}]  用户查询:失败 ❌ 了呢,原因未知！`);
@@ -163,6 +164,40 @@ class UserInfo {
         }
     }
 
+    async task_shareFriends(bdid) { // 分享
+        try {
+            let options = {
+                method: 'POST',
+                url: 'https://cluster.qifeixian.com/api/activity-center/v1/resouces/record',
+                headers: {
+                    Host: 'cluster.qifeixian.com',
+                    Connection: 'keep-alive',
+                    authorization: this.ck,
+                    'x-ds-key': this.ck1,
+                    'User-Agent': 'Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4343 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.30.2260(0x28001E51) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android',
+                    'content-type': 'application/json',
+                    Referer: 'https://servicewechat.com/wx3c0d10f34c013209/141/page-frame.html',
+                    'Content-Length': '73'
+                },
+                body: { type: 'invite_friends', userId: bdid },
+                json: true
+            };
+
+
+
+            //console.log(options);
+            let result = await httpRequest(options, "分享");
+            //console.log(result);
+            if (result.code == 10000) {
+                DoubleLog(`账号[${this.index}]  执行分享: [${result.data.msg}]`);
+            } else {
+                DoubleLog(`账号[${this.index}]  执行失败 ❌ 了呢,原因未知！`);
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     async task_water(tsId, taskId) { // 领取水滴
         try {
