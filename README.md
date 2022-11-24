@@ -2,7 +2,7 @@
 =====================
 # 拉库命令
 
-ql repo https://ghproxy.com/https://github.com/zhaoshicong/QLScriptPublic.git "wool" "demo|backup" "user_agents.js|utils.js"
+ql repo https://ghproxy.com/https://github.com/smallfawn/QLScriptPublic.git "wool" "demo|backup" "user_agents.js|utils.js"
 
 =====================
 
