@@ -3,7 +3,7 @@
  * cron 25 9 * * *  jlqc.js
  *
  * 22/11/23 积分查询 每日分享
- * 22/11/24 文章 评论 签到
+ * 22/11/24 文章 评论 签到     
  * ========= 青龙--配置文件 ===========
  * # 吉利汽车
  * export jlqc_data='txcookie&token'
@@ -11,13 +11,14 @@
  * 多账号用 换行 或 @ 分割
  * 抓包 app.geely.com , 找到 txcookie 和 token 的值 , 用&连接。
  * ====================================
- *   
+ *  
  */
 
 
 
 const $ = new Env("吉利汽车");
 const ckName = "jlqc_data";
+let show = "月300左右积分/可以换实物"
 //-------------------- 一般不动变量区域 -------------------------------------
 const utils = require("./utils");
 const notify = $.isNode() ? require("./sendNotify") : "";
@@ -33,7 +34,7 @@ let userCount = 0;
 //---------------------- 自定义变量区域 -----------------------------------
 
 async function start() {
-
+    console.log(show)
     console.log('\n================== 积分查询 ==================\n');
     taskall = [];
     for (let user of userList) {
