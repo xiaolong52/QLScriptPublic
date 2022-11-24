@@ -57,10 +57,17 @@ async function start() {
         }
     }
     await Promise.all(taskall);
-    console.log('\n================== 发布文章 ==================\n');
+    console.log('\n================== 发布动态 ==================\n');
     taskall = [];
     for (let user of userList) {
-        taskall.push(await user.task_create('发布文章'));
+        taskall.push(await user.task_create1('发布动态'));
+        await wait(3);
+    }
+    await Promise.all(taskall);
+    console.log('\n================= 发布长图文 =================\n');
+    taskall = [];
+    for (let user of userList) {
+        taskall.push(await user.task_create2('发布长图文'));
         await wait(3);
     }
     await Promise.all(taskall);
@@ -176,7 +183,7 @@ class UserInfo {
         }
     }
 
-    async task_create(name) { // 发布文章
+    async task_create1(name) { // 发布动态
         try {
             let options = {
                 method: 'POST',
@@ -189,19 +196,46 @@ class UserInfo {
             let result = await httpRequest(options, name);
             //console.log(result);
             if (result.code == "success") {
-                DoubleLog(`账号[${this.index}]  发布文章: ${result.code} [${result.data}]`);
+                DoubleLog(`账号[${this.index}]  发布动态: ${result.code} [${result.data}]`);
                 let artId = result.data;
-                console.log("------------------ 开始评论文章 ------------------");
+                console.log("---------------- 开始评论动态 ----------------");
                 await wait(5);
                 for (let i = 0; i < 3; i++) {
                     await this.task_comment(artId);
                     await wait(10);
                 }
                 await wait(15);
-                console.log("================== 开始删除文章 ==================");
+                console.log("================== 开始删除动态 ==================");
                 await this.task_delat(artId);
             } else {
-                DoubleLog(`账号[${this.index}]  发布:失败 ❌ 了呢,原因未知！`);
+                DoubleLog(`账号[${this.index}]  发布动态:失败 ❌ 了呢,原因未知！`);
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async task_create2(name) { // 发布长图文
+        try {
+            let options = {
+                method: 'POST',
+                url: this.hostname + '/api/v2/topicContent/create',
+                headers: this.headersPostv2,
+                body: { longImgUrl: "https://geely-app-prod.oss-cn-hangzhou.aliyuncs.com/app/life/IMAGE/20221124/4109897683160859157/07779ca2e7694e3fbde886aa33fa4825.jpeg", circleId: null, contentType: 1, content: this.createTxt, fileList: null, longTitle: this.createTxt, topicList: [] },
+                json: true
+            };
+            //console.log(options);
+            let result = await httpRequest(options, name);
+            //console.log(result);
+            if (result.code == "success") {
+                DoubleLog(`账号[${this.index}]  发布长图文: ${result.code} [${result.data}]`);
+                let artId = result.data;
+                await wait(15);
+                console.log("================== 开始删除发布长图文 ==================");
+                await this.task_delat(artId);
+            } else {
+                DoubleLog(`账号[${this.index}]  发布长图文:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
             }
         } catch (error) {
