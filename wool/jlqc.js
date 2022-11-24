@@ -3,7 +3,7 @@
  * cron 25 9 * * *  jlqc.js
  *
  * 22/11/23 积分查询 每日分享
- * 22/11/24 签到 (发布文章 发布评论)待测试
+ * 22/11/24 文章 评论 签到
  * ========= 青龙--配置文件 ===========
  * # 吉利汽车
  * export jlqc_data='txcookie&token'
@@ -57,20 +57,13 @@ async function start() {
         }
     }
     await Promise.all(taskall);
-    //console.log('\n================== 发布文章 ==================\n');
-    //taskall = [];
-    //for (let user of userList) {
-    //taskall.push(await user.task_create('发布文章'));
-    //await wait(3); //延迟
-    //}
-    //await Promise.all(taskall);
-    //console.log('\n================== 评论文章 ==================\n');
-    //taskall = [];
-    //for (let user of userList) {
-    //taskall.push(await user.task_artlist('评论文章'));
-    //await wait(2); //延迟
-    //}
-    //await Promise.all(taskall);
+    console.log('\n================== 发布文章 ==================\n');
+    taskall = [];
+    for (let user of userList) {
+        taskall.push(await user.task_create('发布文章'));
+        await wait(3);
+    }
+    await Promise.all(taskall);
 
 }
 
@@ -90,7 +83,30 @@ class UserInfo {
             token: this.ck2,
             'user-agent': 'okhttp/4.5.0'
         }
-
+        this.headersPostv1 = {
+            txcookie: this.ck1,
+            devicesn: '356617505697247',
+            Host: 'app.geely.com',
+            platform: 'Android',
+            token: this.ck2,
+            'content-type': 'application/json; charset=utf-8',
+            'user-agent': 'okhttp/4.5.0'
+        }
+        this.headersPostv2 = {
+            txcookie: this.ck1,
+            devicesn: '356617505697247',
+            Host: 'app.geely.com',
+            platform: 'Android',
+            token: this.ck2,
+            'content-type': 'application/json; charset=utf-8',
+            'user-agent': 'okhttp/4.3.1',
+            appversion: '2.6.0'
+        }
+        this.randomInt = utils.randomInt(0, 6);
+        this.commentTxtArr = ["真不错啊", "很棒啊", "好可爱啊", "真厉害呀", "我超级想要", "怎么办呐", "哇咔咔"]
+        this.createTxtArr = ["最近有点冷", "今天是周几啊", "今天真暖和啊", "今天有点凉", "大家穿棉服了吗", "晚上吃点啥好呢", "大家那边下雪了吗", "早上吃点啥?"]
+        this.commentTxt = this.commentTxtArr[this.randomInt]
+        this.createTxt = this.createTxtArr[this.randomInt]
     }
 
     async info_point(name) { // 积分查询
@@ -119,16 +135,7 @@ class UserInfo {
             let options = {
                 method: 'POST',
                 url: this.hostname + '/api/v1/share/awardPoint',
-                headers: {
-                    txcookie: this.ck1,
-                    devicesn: '356617505697247',
-                    Host: 'app.geely.com',
-                    platform: 'Android',
-                    token: this.ck2,
-                    'content-type': 'application/json; charset=utf-8',
-                    'content-length': '2',
-                    'user-agent': 'okhttp/4.5.0'
-                },
+                headers: this.headersPostv1,
                 body: {},
                 json: true
             };
@@ -151,16 +158,7 @@ class UserInfo {
             let options = {
                 method: 'POST',
                 url: this.hostname + '/api/v1/user/sign/',
-                headers: {
-                    txcookie: this.ck1,
-                    devicesn: '356617505697247',
-                    Host: 'app.geely.com',
-                    platform: 'Android',
-                    token: this.ck2,
-                    'content-type': 'application/json; charset=utf-8',
-                    'content-length': '2',
-                    'user-agent': 'okhttp/4.5.0'
-                },
+                headers: this.headersPostv1,
                 body: {},
                 json: true
             };
@@ -182,25 +180,26 @@ class UserInfo {
         try {
             let options = {
                 method: 'POST',
-                url: this.hostname + '/api/v1/community/topicContent/create',
-                headers: {
-                    txcookie: this.ck1,
-                    devicesn: '356617505697247',
-                    Host: 'app.geely.com',
-                    platform: 'Android',
-                    token: this.ck2,
-                    'content-type': 'application/json; charset=utf-8',
-                    'content-length': '62',
-                    'user-agent': 'okhttp/4.5.0'
-                },
-                body: { content: '今天也是元气满满的一天哦', topicList: [] },
+                url: this.hostname + '/api/v2/topicContent/create',
+                headers: this.headersPostv2,
+                body: { circleId: null, contentType: 1, content: this.createTxt, fileList: null, longTitle: this.createTxt, topicList: [] },
                 json: true
             };
             //console.log(options);
             let result = await httpRequest(options, name);
             //console.log(result);
             if (result.code == "success") {
-                DoubleLog(`账号[${this.index}]  发布文章:` + artid + `:${result.code}`);
+                DoubleLog(`账号[${this.index}]  发布文章: ${result.code} [${result.data}]`);
+                let artId = result.data;
+                console.log("------------------ 开始评论文章 ------------------");
+                await wait(5);
+                for (let i = 0; i < 3; i++) {
+                    await this.task_comment(artId);
+                    await wait(10);
+                }
+                await wait(15);
+                console.log("================== 开始删除文章 ==================");
+                await this.task_delat(artId);
             } else {
                 DoubleLog(`账号[${this.index}]  发布:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
@@ -210,57 +209,13 @@ class UserInfo {
         }
     }
 
-    async task_artlist(name) { // 圈子动态列表
-        try {
-            let options = {
-                method: 'POST',
-                url: this.hostname + '/api/v1/community/topicContent/queryPage',
-                headers: {
-                    txcookie: this.ck1,
-                    devicesn: '356617505697247',
-                    Host: 'app.geely.com',
-                    platform: 'Android',
-                    token: this.ck2,
-                    'content-type': 'application/json; charset=utf-8',
-                    'content-length': '43',
-                    'user-agent': 'okhttp/4.5.0'
-                },
-                body: { pageSize: 10, pageNum: 1, auditStatus: 3 },
-                json: true
-            };
-            //console.log(options);
-            let result = await httpRequest(options, name);
-            //console.log(result);
-            if (result.code == "success") {
-                DoubleLog(`账号[${this.index}]  文章列表: ${result.data.list[0].id}`);
-                let artid = result.data.list[0].id;
-                await this.task_comment(artid);
-            } else {
-                DoubleLog(`账号[${this.index}]  获取:失败 ❌ 了呢,原因未知！`);
-                console.log(result);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
     async task_comment(artid) { // 执行评论
         try {
             let options = {
                 method: 'POST',
                 url: this.hostname + '/api/v1/community/comment/publisherComment',
-                headers: {
-                    txcookie: this.ck1,
-                    devicesn: '356617505697247',
-                    Host: 'app.geely.com',
-                    platform: 'Android',
-                    token: this.ck2,
-                    'content-type': 'application/json; charset=utf-8',
-                    'content-length': '59',
-                    'user-agent': 'okhttp/4.5.0'
-                },
-                body: { content: '好可爱', id: artid, type: 2 },
+                headers: this.headersPostv1,
+                body: { content: this.commentTxt, id: artid, type: 2 },
                 json: true
             };
             //console.log(options);
@@ -277,7 +232,55 @@ class UserInfo {
         }
     }
 
+    async task_delat(artid) { // 执行删除
+        try {
+            let options = {
+                method: 'POST',
+                url: this.hostname + '/api/v2/topicContent/deleteContent',
+                headers: this.headersPostv2,
+                body: { id: artid },
+                json: true
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "删除");
+            //console.log(result);
+            if (result.code == "success") {
+                DoubleLog(`账号[${this.index}]  删除文章:` + artid + `:${result.code}`);
+            } else {
+                DoubleLog(`账号[${this.index}]  删除:失败 ❌ 了呢,原因未知！`);
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
+
+
+
+    async task_artlist(name) { // 圈子动态列表
+        try {
+            let options = {
+                method: 'POST',
+                url: this.hostname + '/api/v1/community/topicContent/queryPage',
+                headers: this.headersPostv1,
+                body: { pageSize: 10, pageNum: 1, auditStatus: 3 },
+                json: true
+            };
+            //console.log(options);
+            let result = await httpRequest(options, name);
+            //console.log(result);
+            if (result.code == "success") {
+                DoubleLog(`账号[${this.index}]  文章列表: ${result.data.list[0].id}`);
+                //await this.task_comment(artid);
+            } else {
+                DoubleLog(`账号[${this.index}]  获取:失败 ❌ 了呢,原因未知！`);
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 !(async () => {
