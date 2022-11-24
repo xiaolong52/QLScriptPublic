@@ -232,7 +232,7 @@ class UserInfo {
                 DoubleLog(`账号[${this.index}]  发布长图文: ${result.code} [${result.data}]`);
                 let artId = result.data;
                 await wait(15);
-                console.log("================== 开始删除发布长图文 ==================");
+                console.log("================ 开始删除发布长图文 ================");
                 await this.task_delat(artId);
             } else {
                 DoubleLog(`账号[${this.index}]  发布长图文:失败 ❌ 了呢,原因未知！`);
