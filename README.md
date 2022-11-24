@@ -7,9 +7,9 @@ ql repo https://ghproxy.com/https://github.com/smallfawn/QLScriptPublic.git "woo
 =====================
 
 # 脚本模板
-https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/newV4.js
+https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/QLScriptPublic/main/demo/newV4.js
 
-https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/demo/newV3.js
+https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/QLScriptPublic/main/demo/newV3.js
 
 =====================
 
