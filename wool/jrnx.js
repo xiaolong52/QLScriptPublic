@@ -86,7 +86,7 @@ class UserInfo {
         this.hostname = "https://" + this.host;
         this.key = "FR*r!isE5W";
         this.appId = 11;
-        this.artlistdata = "5c8a0ea9296adc613c0d5154"
+        this.artlistdata = "5c9b62d01b011b05889100ba"
     }
 
 
