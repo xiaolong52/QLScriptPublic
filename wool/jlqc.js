@@ -4,6 +4,7 @@
  *
  * 22/11/23 积分查询 每日分享
  * 22/11/24 文章 评论 签到     
+ * 22/11/25 修复长图文 删除评论
  * ========= 青龙--配置文件 ===========
  * # 吉利汽车
  * export jlqc_data='txcookie&token'
@@ -115,6 +116,7 @@ class UserInfo {
         this.createTxtArr = ["最近有点冷", "今天是周几啊", "今天真暖和啊", "今天有点凉", "大家穿棉服了吗", "晚上吃点啥好呢", "大家那边下雪了吗", "早上吃点啥?"]
         this.commentTxt = this.commentTxtArr[this.randomInt]
         this.createTxt = this.createTxtArr[this.randomInt]
+        this.imgurl = "https://geely-app-prod.oss-cn-hangzhou.aliyuncs.com/app/life/IMAGE/20221124/4109897683160859157/07779ca2e7694e3fbde886aa33fa4825.jpeg"
     }
 
     async info_point(name) { // 积分查询
@@ -199,12 +201,12 @@ class UserInfo {
             if (result.code == "success") {
                 DoubleLog(`账号[${this.index}]  发布动态: ${result.code} [${result.data}]`);
                 let artId = result.data;
-                console.log("---------------- 开始评论动态 ----------------");
-                await wait(5);
-                for (let i = 0; i < 3; i++) {
-                    await this.task_comment(artId);
-                    await wait(10);
-                }
+                //console.log("---------------- 开始评论动态 ----------------");
+                //await wait(5);
+                //for (let i = 0; i < 3; i++) {
+                //await this.task_comment(artId);
+                //await wait(10);
+                //}
                 await wait(15);
                 console.log("================== 开始删除动态 ==================");
                 await this.task_delat(artId);
@@ -223,7 +225,7 @@ class UserInfo {
                 method: 'POST',
                 url: this.hostname + '/api/v2/topicContent/create',
                 headers: this.headersPostv2,
-                body: { longImgUrl: "https://geely-app-prod.oss-cn-hangzhou.aliyuncs.com/app/life/IMAGE/20221124/4109897683160859157/07779ca2e7694e3fbde886aa33fa4825.jpeg", circleId: null, contentType: 1, content: this.createTxt, fileList: null, longTitle: this.createTxt, topicList: [] },
+                body: { longImgUrl: this.imgurl, circleId: null, contentType: 2, content: this.createTxt, fileList: null, longTitle: this.createTxt, topicList: [] },
                 json: true
             };
             //console.log(options);
@@ -244,7 +246,7 @@ class UserInfo {
         }
     }
 
-    async task_comment(artid) { // 执行评论
+    async task_comment(artid) { // 执行评论 V1不加积分
         try {
             let options = {
                 method: 'POST',
