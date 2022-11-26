@@ -497,7 +497,7 @@ class UserInfo {
             let result = await httpRequest(options, "");
             //console.log(result);
             if (result.ret == 0) {
-                DoubleLog(`账号[${this.index}] `)
+                DoubleLog(`账号[${this.index}] 验证成功`)
             } else {
             }
         } catch (error) {
