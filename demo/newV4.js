@@ -1,6 +1,6 @@
 /**
  * 演示模板
- * cron 10 7 * * *  demoV3.js
+ * cron 10 7 * * *  demoV4.js
  *
  * 22/11/14   参考各位大佬的模板修改了这个模板V3
  * 22/11/15   参考各位大佬,建立了依赖库(时间戳,md5等算法)
@@ -21,7 +21,7 @@
 const $ = new Env("演示模板");
 const ckName = "demo_data";
 //-------------------- 一般不动变量区域 -------------------------------------
-const utils = require("./utils");
+let utils = require("./utils");
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1;		 //0为关闭通知,1为打开通知,默认为1
 let debug = 0;           //Debug调试   0关闭  1开启
@@ -121,7 +121,7 @@ async function checkEnv() {
 }
 // =========================================== 不懂不要动 =========================================================
 // 网络请求 (get, post等)
-async function httpRequest(options, name) { return new Promise((resolve) => { var request = require("request"); if (!name) { let tmp = arguments.callee.toString(); let re = /function\s*(\w*)/i; let matches = re.exec(tmp); name = matches[1] } if (debug) { console.log(`\n【debug】===============这是${name}请求信息===============`); console.log(options) } request(options, function (error, response) { if (error) throw new Error(error); let data = response.body; try { if (debug) { console.log(`\n\n【debug】===============这是${name}返回数据==============`); console.log(data) } if (typeof data == "string") { if (isJsonString(data)) { let result = JSON.parse(data); if (debug) { console.log(`\n【debug】=============这是${name}json解析后数据============`); console.log(result) } resolve(result) } else { let result = data; resolve(result) } function isJsonString(str) { if (typeof str == "string") { try { if (typeof JSON.parse(str) == "object") { return true } } catch (e) { return false } } return false } } else { let result = data; resolve(result) } } catch (e) { console.log(error, response); console.log(`\n ${name}失败了!请稍后尝试!!`) } finally { resolve() } }) }) }
+async function httpRequest(options, name) { var request = require("request"); return new Promise((resolve) => { if (!name) { let tmp = arguments.callee.toString(); let re = /function\s*(\w*)/i; let matches = re.exec(tmp); name = matches[1] } if (debug) { console.log(`\n【debug】===============这是${name}请求信息===============`); console.log(options) } request(options, function (error, response) { if (error) throw new Error(error); let data = response.body; try { if (debug) { console.log(`\n\n【debug】===============这是${name}返回数据==============`); console.log(data) } if (typeof data == "string") { if (isJsonString(data)) { let result = JSON.parse(data); if (debug) { console.log(`\n【debug】=============这是${name}json解析后数据============`); console.log(result) } resolve(result) } else { let result = data; resolve(result) } function isJsonString(str) { if (typeof str == "string") { try { if (typeof JSON.parse(str) == "object") { return true } } catch (e) { return false } } return false } } else { let result = data; resolve(result) } } catch (e) { console.log(error, response); console.log(`\n ${name}失败了!请稍后尝试!!`) } finally { resolve() } }) }) }
 // 等待 X 秒
 function wait(n) { return new Promise(function (resolve) { setTimeout(resolve, n * 1000) }) }
 // 双平台log输出
