@@ -43,7 +43,7 @@ async function start() {
 
     console.log(show)
 
-    console.log('\n================== 登录 ==================\n');
+    console.log('================== 初始化 ==================');
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.user_login2('用户登录'));
