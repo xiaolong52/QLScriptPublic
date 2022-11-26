@@ -251,7 +251,7 @@ class UserInfo {
             };
             //console.log(options);
             let result = await httpRequest(options, "执行评论");
-            console.log(result);
+            //console.log(result);
             if (result.ret == 0) {
                 DoubleLog(`账号[${this.index}]  评论文章成功`);
                 let resultdata = result.data.task_reply_info;
