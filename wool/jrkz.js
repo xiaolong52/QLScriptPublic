@@ -10,7 +10,7 @@
  * 
  * 多账号用 换行 或 @ 分割
  * 抓包  api.jrkz66.com/v5_0/ , 找到 headers中 third-app-token的值 和 Authorization的值 和 device 的值
- * 如果抓不到请在 api.jrkz66.com Cookie里找到third-app-token 的值和qianfan_device 的值请把qianfan_device的值base64转化后再去填入
+ * 如果抓不到/无网络请在 api.jrkz66.com headers中找到Authorization的值,Cookie里找到third-app-token 的值和qianfan_device 的值请把qianfan_device的值base64转化后再去填入
  * 用&连接 举例 0a63TjN/KP...&Bearer eyJ..&Yz...cO== 变量触发条件(屏蔽VPN | wifi代理 | ROOT) => 首页左上角 头像
  * ====================================
  *   
