@@ -251,19 +251,23 @@ class UserInfo {
             };
             //console.log(options);
             let result = await httpRequest(options, "执行评论");
-            //console.log(result);
+            console.log(result);
             if (result.ret == 0) {
                 DoubleLog(`账号[${this.index}]  评论文章成功`);
                 let resultdata = result.data.task_reply_info;
-                if (resultdata.envelope !== undefined) {
-                    if (resultdata.envelope !== null) {
-                        console.log('----------------- 达到任务数量,开始领取奖励 -----------------')
-                        let envelop_id = result.data.task_reply_info.envelope.packetId;
-                        let user_envelope_id = result.data.task_reply_info.envelope.user_envelope_id;
-                        let source = result.data.task_reply_info.envelope.source;
-                        await this.task_reply_cash(user_envelope_id, envelop_id, source);
+                //console.log(resultdata)
+                if (resultdata !== null) {
+                    if ("envelope" in resultdata) {
+                        if (resultdata.envelope !== null) {
+                            console.log('----------------- 达到任务数量,开始领取奖励 -----------------')
+                            let envelop_id = result.data.task_reply_info.envelope.packetId;
+                            let user_envelope_id = result.data.task_reply_info.envelope.user_envelope_id;
+                            let source = result.data.task_reply_info.envelope.source;
+                            await this.task_reply_cash(user_envelope_id, envelop_id, source);
+                        }
                     }
                 }
+
             } else {
                 DoubleLog(`账号[${this.index}]  查询:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
@@ -459,7 +463,7 @@ class UserInfo {
             let result = await httpRequest(options, "");
             //console.log(result);
             if (result.ret == 0) {
-                DoubleLog(`账号[${this.index}]  `)
+                DoubleLog(`账号[${this.index}]  验证成功`)
                 if (result.data.user.has_invite == false) {
                     await this.share_code()
                 }
