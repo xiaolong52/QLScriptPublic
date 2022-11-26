@@ -76,6 +76,7 @@ class UserInfo {
         this.key = "ef80bba8858613aa33b19794d68bb338"
         this.date = utils.tmtoDate()
         this.sharecode = [];
+        this.randomIndex = utils.randomInt(0, 10)
     }
 
     async user_info(name) { // 获取用户信息
@@ -148,10 +149,10 @@ class UserInfo {
             //console.log(result);
             if (result.ret == 0) {
                 for (let i = 0; i < 9; i++) {
-                    DoubleLog(`账号[${this.index}]  动态查找成功:tid ${result.data.list[i].tid}, uid ${result.data.list[i].uid}`);
-                    let tid = result.data.list[i].tid;
-                    let uid = result.data.list[i].uid;
-                    let ttxt = result.data.list[i].title;
+                    DoubleLog(`账号[${this.index}]  动态查找成功:tid ${result.data.list[this.randomIndex].tid}, uid ${result.data.list[this.randomIndex].uid}`);
+                    let tid = result.data.list[this.randomIndex].tid;
+                    let uid = result.data.list[this.randomIndex].uid;
+                    let ttxt = result.data.list[this.randomIndex].title;
                     let ctxt = ttxt;//待测试 和文章标题一样的评论
                     await this.task_reply_do(ctxt, ttxt, tid, uid)
                     console.log('------ 评论成功,延迟20s ------')
