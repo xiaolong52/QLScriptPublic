@@ -4,7 +4,6 @@
 let utilsVersion = "0.0.2"
 module.exports = {
     version: version,//版本
-    randomNumber: randomNumber,//生成随机数字 min 最小值（包含）/max 最大值（不包含）
     randomMac: randomMac,//随机MAC网络地址
     guid: guid,//根据时间戳生成GUID 8-4-4-4-12
     phone_num: phone_num,//手机号中间遮挡
@@ -34,13 +33,6 @@ module.exports = {
  */
 function version() {
     return utilsVersion;
-}
-
-/**
- * 生成随机数字 min 最小值（包含）/max 最大值（不包含）
- */
-function randomNumber(min = 0, max = 100) {
-  return Math.min(Math.floor(min + Math.random() * (max - min)), max);
 }
 
 /**
