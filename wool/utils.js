@@ -4,6 +4,7 @@
 let utilsVersion = "0.0.2"
 module.exports = {
     version: version,//版本
+    randomMac: randomMac,//随机MAC网络地址
     guid: guid,//根据时间戳生成GUID 8-4-4-4-12
     phone_num: phone_num,//手机号中间遮挡
     randomszdx: randomszdx,//随机 数字 + 大写字母 生成
@@ -32,6 +33,15 @@ module.exports = {
  */
 function version() {
     return utilsVersion;
+}
+
+/**
+ * 随机MAC网络地址
+ */
+function randomMac() {
+    return "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
+        return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+    });
 }
 
 /**
