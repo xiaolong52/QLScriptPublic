@@ -1,6 +1,6 @@
 # QLScriptPublic 青龙脚本公共库
 =====================
-# 拉库命令
+# 拉取仓库命令
 
 ql repo https://ghproxy.com/https://github.com/smallfawn/QLScriptPublic.git "wool" "demo|backup" "user_agents.js|utils.js"
 
@@ -9,7 +9,7 @@ ql repo https://ghproxy.com/https://github.com/smallfawn/QLScriptPublic.git "woo
 ql raw https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/脚本文件名.js
 
 ql raw https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/utils.js
-# 单脚本拉库命令需要拉两个文件 缺一不可
+# 单脚本命令需要拉两个文件 缺一不可
 # 脚本模板
 https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/QLScriptPublic/main/demo/newV4.js
 
