@@ -2,8 +2,8 @@
  * 今日越城
  * cron 10 7 * * *  jryc.js
  *
- * 2022/11/21 执行签到,阅读,点赞,分享,本地服务
- * 2022/11/27 增加评论 和 延迟 
+ * 22/11/21 执行签到,阅读,点赞,分享,本地服务
+ * 22/11/27 增加评论 延迟
  * ========= 青龙--配置文件 ===========
  * # 今日越城
  * export jryc_data='xxxxx @ xxxxx'
@@ -32,10 +32,11 @@ let userList = [];
 let userIdx = 0;
 let userCount = 0;
 //---------------------- 自定义变量区域 -----------------------------------
+let txtState = 0;
 //------------------------------------------------------------------------
 
 async function start() {
-    console.log('\n======== 今日越城:签到,阅读,点赞,分享 =========\n');
+    console.log('\n======== 请一天运行3次 =========\n');
     console.log('\n================== 用户信息 ==================\n');
     taskall = [];
     for (let user of userList) {
@@ -139,6 +140,7 @@ class UserInfo {
             let result = await httpRequest(options, name);
             //console.log(result);
             if (result.code == 0) {
+                await this.user_info();
                 DoubleLog(`账号[${this.index}],欢迎用户:[${result.data.rst.nick_name}],当前积分为[${result.data.rst.total_integral}]`);
                 for (let i = 0; i < result.data.rst.user_task_list.length; i++) {
                     DoubleLog(`账号[${this.index}],获取任务列表成功:${result.data.rst.user_task_list[i].name}[${result.data.rst.user_task_list[i].finish_times}/${result.data.rst.user_task_list[i].frequency}]`);
@@ -372,13 +374,90 @@ class UserInfo {
             };
             //console.log(options);
             let result = await httpRequest(options, name);
-            //console.log(result);
+            console.log(result);
             if (result.code == 0) {
                 DoubleLog(`账号[${this.index}],` + name + `成功`);
                 if (result.data) { `账号[${this.index}],` + name + `执行完毕共获得:[${result.data.score_notify.integral}]` }
             } else {
                 DoubleLog(`账号[${this.index}],分享文章:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async user_info() { // 阅读文章
+        let host_data = `/api/user_mumber/account_detail`
+        let REQUEST_ID = utils.guid();
+        let TIMESTAMP = utils.ts13();
+        let s = `${host_data}&&${this.ck}&&${REQUEST_ID}&&${TIMESTAMP}&&${this.key}&&31`
+        let SIGNATURE = utils.SHA256_Encrypt(s)
+        try {
+            let options = {
+                method: 'GET',
+                url: `${this.hostname}${host_data}`,
+                headers: {
+                    'X-SESSION-ID': `${this.ck}`,
+                    'X-REQUEST-ID': REQUEST_ID,
+                    'X-TIMESTAMP': TIMESTAMP,
+                    'X-SIGNATURE': SIGNATURE,
+                    'X-TENANT-ID': '31',
+                    'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
+                    'Cache-Control': 'no-cache',
+                    Host: 'vapp.tmuyun.com',
+                    Connection: 'Keep-Alive',
+                }
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "用户信息");
+            //console.log(result);
+            if (result.code == 0) {
+                //DoubleLog(`账号[${this.index}],验证成功[${result.data.rst.nick_name}]`);
+                if (result.data.rst.ref_user_uid == "") {
+                    await this.share_code("分享")
+                }
+            } else {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+                //console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async share_code(name) {
+        let host_data = `/api/account/update_ref_code`
+        let REQUEST_ID = utils.guid();
+        let TIMESTAMP = utils.ts13();
+        let s = `${host_data}&&${this.ck}&&${REQUEST_ID}&&${TIMESTAMP}&&${this.key}&&31`
+        let SIGNATURE = utils.SHA256_Encrypt(s)
+        try {
+            let options = {
+                method: 'POST',
+                url: `${this.hostname}${host_data}`,
+                headers: {
+                    'X-SESSION-ID': `${this.ck}`,
+                    'X-REQUEST-ID': REQUEST_ID,
+                    'X-TIMESTAMP': TIMESTAMP,
+                    'X-SIGNATURE': SIGNATURE,
+                    'X-TENANT-ID': '31',
+                    'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
+                    'Cache-Control': 'no-cache',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Host: 'vapp.tmuyun.com',
+                    Connection: 'Keep-Alive',
+                },
+                form: { ref_code: "MK3469" }
+            };
+            //console.log(options);
+            let result = await httpRequest(options, name);
+            //console.log(result);
+            if (result.code == 0) {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+            } else {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+                //console.log(result);
             }
         } catch (error) {
             console.log(error);
