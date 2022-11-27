@@ -3,6 +3,7 @@
  * cron 10 7 * * *  jryc.js
  *
  * 2022/11/21 执行签到,阅读,点赞,分享,本地服务
+ * 2022/11/27 增加评论 和 延迟 
  * ========= 青龙--配置文件 ===========
  * # 今日越城
  * export jryc_data='xxxxx @ xxxxx'
@@ -17,8 +18,8 @@
 
 const $ = new Env("今日越城");
 const ckName = "jryc_data";
-const utils = require("./utils")
 //-------------------- 一般不动变量区域 -------------------------------------
+const utils = require("./utils")
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1;		 //0为关闭通知,1为打开通知,默认为1
 let debug = 0;           //Debug调试   0关闭  1开启
@@ -39,6 +40,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_tasklist('用户信息'));
+        await wait(5)
     }
     await Promise.all(taskall);
 
@@ -46,6 +48,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_sign('每日签到'));
+        await wait(5)
     }
     await Promise.all(taskall);
 
@@ -53,6 +56,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_articlelist('文章列表'));
+        await wait(1)
     }
     await Promise.all(taskall);
 
@@ -61,6 +65,7 @@ async function start() {
     for (let user of userList) {
         for (let i = 0; i <= 5; i++) {
             taskall.push(await user.task_share("3", "分享"));
+            await wait(3)
         }
     }
     await Promise.all(taskall);
@@ -69,6 +74,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_share("6", "本地服务"));
+        await wait(3)
     }
     await Promise.all(taskall);
 
@@ -85,6 +91,26 @@ class UserInfo {
         this.key = "FR*r!isE5W";
     }
 
+    async txt_api() { // 获取评论 一言api
+        try {
+            let options = {
+                method: 'GET',
+                url: 'https://v1.hitokoto.cn/',
+                qs: { c: 'd' },
+                headers: { 'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
+                formData: {}
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "");
+            //console.log(result);
+            if (result.id) {
+                return result.hitokoto;
+            } else {
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     async task_tasklist(name) { // 任务列表
@@ -191,8 +217,12 @@ class UserInfo {
                 for (let i = 3; i < 8; i++) {
                     //DoubleLog(`账号[${this.index}],获取文章列表[${result.data.article_list[i].id}]`)
                     let articleId = result.data.article_list[i].id;
+                    await wait(3);
                     await this.task_read(articleId);
+                    await wait(3);
                     await this.task_like(articleId);
+                    await wait(3);
+                    await this.task_comment(articleId);
                 }
             } else {
                 DoubleLog(`账号[${this.index}],获取文章:失败 ❌ 了呢,原因未知！`);
@@ -258,7 +288,6 @@ class UserInfo {
                     'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
                     'Cache-Control': 'no-cache',
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Content-Length': '22',
                     Host: 'vapp.tmuyun.com',
                     Connection: 'Keep-Alive',
                 },
@@ -271,6 +300,45 @@ class UserInfo {
                 DoubleLog(`账号[${this.index}],点赞文章成功:[` + articleId + `]`);
             } else {
                 DoubleLog(`账号[${this.index}],用户查询:失败 ❌ 了呢,原因未知！`);
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async task_comment(articleId) { // 评论文章
+        let txt = await this.txt_api()
+        let host_data = `/api/comment/create`
+        let REQUEST_ID = utils.guid();
+        let TIMESTAMP = utils.ts13();
+        let s = `${host_data}&&${this.ck}&&${REQUEST_ID}&&${TIMESTAMP}&&${this.key}&&31`
+        let SIGNATURE = utils.SHA256_Encrypt(s)
+        try {
+            let options = {
+                method: 'POST',
+                url: `${this.hostname}${host_data}`,
+                headers: {
+                    'X-SESSION-ID': `${this.ck}`,
+                    'X-REQUEST-ID': REQUEST_ID,
+                    'X-TIMESTAMP': TIMESTAMP,
+                    'X-SIGNATURE': SIGNATURE,
+                    'X-TENANT-ID': '31',
+                    'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
+                    'Cache-Control': 'no-cache',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Host: 'vapp.tmuyun.com',
+                    Connection: 'Keep-Alive',
+                },
+                form: { channel_article_id: articleId, content: txt }
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "评论");
+            //console.log(result);
+            if (result.code == 0) {
+                DoubleLog(`账号[${this.index}],评论成功[` + txt + `]`);
+            } else {
+                DoubleLog(`账号[${this.index}],评论:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
             }
         } catch (error) {
@@ -297,7 +365,6 @@ class UserInfo {
                     'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
                     'Cache-Control': 'no-cache',
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Content-Length': '26',
                     Host: 'vapp.tmuyun.com',
                     Connection: 'Keep-Alive',
                 },
@@ -321,9 +388,9 @@ class UserInfo {
 
 !(async () => {
     if (!(await checkEnv())) return;
-        if (userList.length > 0) {
-            await start();
-        }
+    if (userList.length > 0) {
+        await start();
+    }
     await SendMsg(msg);
 })()
     .catch((e) => console.log(e))
@@ -351,8 +418,10 @@ async function checkEnv() {
     return console.log(`共找到${userCount}个账号`), true;//true == !0
 }
 // =========================================== 不懂不要动 =========================================================
+// 依赖检测
+async function utilsCheck(file_name) { const fs = require("fs"); const path = require("path"); var request = require("request"); dirPath = path.resolve(__dirname); let files = fs.readdirSync(dirPath); if (files.indexOf(file_name) > -1) { console.log(`正在检测依赖!当前目录[${dirPath}]依赖${file_name}文件状态正常!\n正在检测依赖版本!`); await utilsVersionCheck() } else { console.log(`正在检测依赖!当前目录[${dirPath}]未找到${file_name},将下载到该目录!`); await utilsWrite(file_name) } function utilsVersionCheck() { let options = { method: "GET", url: "https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/utils.js", headers: {}, }; return new Promise((resolve) => { request(options, async function (error, response) { if (error) throw new Error(error); let utilsVersionNew = response.body.match(/utilsVersion = "([\d\.]+)"/)[1]; utils = require("./utils"); let utilsVersionNow = utils.version(); if (utilsVersionNew == utilsVersionNow) { console.log("当前版本" + utilsVersionNow + "最新版本" + utilsVersionNew + ":无更新,依赖正常,开始执行任务"); resolve(); return utils, startState = 1 } else { console.log("当前版本" + utilsVersionNow + "检测到最新版本" + utilsVersionNew + ",即将为您更新最新依赖"); await utilsWrite("utils.js") } }) }) } function utilsWrite(file_name) { dirPath = path.resolve(__dirname); let options = { method: "GET", url: "https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/utils.js", headers: {}, }; return new Promise((resolve) => { request(options, async function (error, response) { if (error) throw new Error(error); text = response.body; fs.writeFile(`${dirPath}/${file_name}`, text, `utf-8`, (err) => { if (err) { console.log(`目录[${dirPath}]${file_name}依赖文件写入失败,请自行下载${options.url},到目录${dirPath}下,命名为${file_name},完成后再次运行脚本!`); resolve(); return startState = 0 } console.log(`\n目录[${dirPath}]${file_name}依赖文件写入成功,请再次运行脚本!`); resolve(); return startState = 0 }) }) }) } }
 // 网络请求 (get, post等)
-async function httpRequest(options, name) { var request = require("request"); return new Promise((resolve) => { if (!name) { let tmp = arguments.callee.toString(); let re = /function\s*(\w*)/i; let matches = re.exec(tmp); name = matches[1] } if (debug) { console.log(`\n【debug】===============这是${name}请求信息===============`); console.log(options) } request(options, function (error, response) { if (error) throw new Error(error); let data = response.body; try { if (debug) { console.log(`\n\n【debug】===============这是${name}返回数据==============`); console.log(data) } if (typeof data == "string") { if (isJsonString(data)) { let result = JSON.parse(data); if (debug) { console.log(`\n【debug】=============这是${name}json解析后数据============`); console.log(result) } resolve(result) } else { let result = data; resolve(result) } function isJsonString(str) { if (typeof str == "string") { try { if (typeof JSON.parse(str) == "object") { return true } } catch (e) { return false } } return false } } else { let result = data; resolve(result) } } catch (e) { console.log(error, response); console.log(`\n ${name}失败了!请稍后尝试!!`) } finally { resolve() } }) }) }
+async function httpRequest(options, name) { return new Promise((resolve) => { var request = require("request"); if (!name) { let tmp = arguments.callee.toString(); let re = /function\s*(\w*)/i; let matches = re.exec(tmp); name = matches[1] } if (debug) { console.log(`\n【debug】===============这是${name}请求信息===============`); console.log(options) } request(options, function (error, response) { if (error) throw new Error(error); let data = response.body; try { if (debug) { console.log(`\n\n【debug】===============这是${name}返回数据==============`); console.log(data) } if (typeof data == "string") { if (isJsonString(data)) { let result = JSON.parse(data); if (debug) { console.log(`\n【debug】=============这是${name}json解析后数据============`); console.log(result) } resolve(result) } else { let result = data; resolve(result) } function isJsonString(str) { if (typeof str == "string") { try { if (typeof JSON.parse(str) == "object") { return true } } catch (e) { return false } } return false } } else { let result = data; resolve(result) } } catch (e) { console.log(error, response); console.log(`\n ${name}失败了!请稍后尝试!!`) } finally { resolve() } }) }) }
 // 等待 X 秒
 function wait(n) { return new Promise(function (resolve) { setTimeout(resolve, n * 1000) }) }
 // 双平台log输出
