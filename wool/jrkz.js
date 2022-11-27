@@ -1,5 +1,5 @@
 /**
- * 今日开州
+ * 今日开州 APP
  * cron 38,52 8,9,11 * * *  jrkz.js
  *
  * https://share.dykz66.com/store-view/share/inviteShare?uid=122466&type=1
@@ -7,7 +7,7 @@
  * 22/11/26   优化评论文案 随机延迟
  * 22/11/27   增加部分任务
  * ========= 青龙--配置文件 ===========
- * # 今日开州 每日1元左右现金/15起提/低保
+ * # 今日开州 APP 每日1元左右现金/15起提/低保
  * export jrkz_data='sxxxxx&x121212&c45132a...'
  * 
  * 多账号用 换行 或 @ 分割
@@ -228,7 +228,7 @@ class UserInfo {
                 DoubleLog(`账号[${this.index}] UID: ${result.data.head[0].data.user_id} 钱包余额: ${result.data.head[1].data.items[0].value} 金币余额:${result.data.head[1].data.items[1].value} `)
                 await this.share_code_info();
             } else {
-                DoubleLog(`账号[${this.index}]  动态查询:失败 ❌ 了呢,原因未知！`);
+                DoubleLog(`账号[${this.index}] 信息查询:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
             }
         } catch (error) {
@@ -282,10 +282,10 @@ class UserInfo {
             //console.log(result);
             if (result.ret == 0) {
                 for (let i = 0; i < 5; i++) {
-                    DoubleLog(`账号[${this.index}]  动态查找成功:tid ${result.data.list[this.randomIndex].tid}, uid ${result.data.list[this.randomIndex].uid}`);
-                    let tid = result.data.list[this.randomIndex].tid;
-                    let uid = result.data.list[this.randomIndex].uid;
-                    let ttxt = result.data.list[this.randomIndex].title;
+                    DoubleLog(`账号[${this.index}]  动态查找成功:tid ${result.data.list[i].tid}, uid ${result.data.list[i].uid}`);
+                    let tid = result.data.list[i].tid;
+                    let uid = result.data.list[i].uid;
+                    let ttxt = result.data.list[i].title;
                     let ctxt = txt;
                     await this.task_reply_do(ctxt, ttxt, tid, uid)
                     console.log('------ 评论成功,随机延迟' + this.randomtime + 's ------')
@@ -374,7 +374,7 @@ class UserInfo {
                     }
                 }
             } else {
-                DoubleLog(`账号[${this.index}]  查询:失败 ❌ 了呢,原因未知！`);
+                DoubleLog(`账号[${this.index}]  评论:失败 ❌ 了呢,原因未知！`);
                 console.log(result);
             }
         } catch (error) {
