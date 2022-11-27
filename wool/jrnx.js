@@ -4,10 +4,11 @@
  *
  * https://app.tmuyun.com/webChannels/invite?inviteCode=J8YDP9&tenantId=11&accountId=637b7334b77d2e7e53f07937
  * 
- * 2022/11/25 执行签到,阅读,点赞,分享,本地服务
+ * 22/11/25 执行签到,阅读,点赞,分享,本地服务
+ * 22/11/27 增加评论 延迟
  * ========= 青龙--配置文件 ===========
- * # 今日越城
- * export jryc_data='xxxxx @ xxxxx'
+ * # 今日南浔
+ * export jrnx_data='xxxxx @ xxxxx'
  * 
  * 多账号用 换行 或 @ 分割
  * 抓包 vapp.tmuyun.com , 找到 header中的X-SESSION-ID 即可
@@ -19,9 +20,9 @@
 
 const $ = new Env("今日南浔");
 const ckName = "jrnx_data";
-let show = "每日250分左右/可换实物"
-const utils = require("./utils")
+
 //-------------------- 一般不动变量区域 -------------------------------------
+const utils = require("./utils")
 const notify = $.isNode() ? require("./sendNotify") : "";
 const Notify = 1;		 //0为关闭通知,1为打开通知,默认为1
 let debug = 0;           //Debug调试   0关闭  1开启
@@ -34,6 +35,7 @@ let userList = [];
 let userIdx = 0;
 let userCount = 0;
 //---------------------- 自定义变量区域 -----------------------------------
+let show = "每日250分左右/可换实物"
 //------------------------------------------------------------------------
 
 async function start() {
@@ -42,6 +44,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_tasklist('用户信息'));
+        await wait(1);
     }
     await Promise.all(taskall);
 
@@ -49,6 +52,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_sign('每日签到'));
+        await wait(3);
     }
     await Promise.all(taskall);
 
@@ -56,6 +60,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_articlelist('文章列表'));
+        await wait(3);
     }
     await Promise.all(taskall);
 
@@ -64,6 +69,7 @@ async function start() {
     for (let user of userList) {
         for (let i = 0; i <= 5; i++) {
             taskall.push(await user.task_share("3", "分享"));
+            await wait(3);
         }
     }
     await Promise.all(taskall);
@@ -72,6 +78,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.task_share("6", "本地服务"));
+        await wait(3);
     }
     await Promise.all(taskall);
 
@@ -90,7 +97,26 @@ class UserInfo {
         this.artlistdata = "5c9b62d01b011b05889100ba"
     }
 
-
+    async txt_api() { // 获取评论 一言api
+        try {
+            let options = {
+                method: 'GET',
+                url: 'https://v1.hitokoto.cn/',
+                qs: { c: 'd' },
+                headers: { 'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
+                formData: {}
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "");
+            //console.log(result);
+            if (result.id) {
+                return result.hitokoto;
+            } else {
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     async task_tasklist(name) { // 任务列表
         let host_data = `/api/user_mumber/numberCenter`
@@ -196,8 +222,12 @@ class UserInfo {
                 for (let i = 3; i < 8; i++) {
                     //DoubleLog(`账号[${this.index}],获取文章列表[${result.data.article_list[i].id}]`)
                     let articleId = result.data.article_list[i].id;
+                    await wait(3);
                     await this.task_read(articleId);
+                    await wait(3);
                     await this.task_like(articleId);
+                    await wait(3);
+                    await this.task_comment(articleId);
                 }
             } else {
                 DoubleLog(`账号[${this.index}],获取文章:失败 ❌ 了呢,原因未知！`);
@@ -282,6 +312,45 @@ class UserInfo {
         }
     }
 
+    async task_comment(articleId) { // 评论文章
+        let txt = await this.txt_api()
+        let host_data = `/api/comment/create`
+        let REQUEST_ID = utils.guid();
+        let TIMESTAMP = utils.ts13();
+        let s = `${host_data}&&${this.ck}&&${REQUEST_ID}&&${TIMESTAMP}&&${this.key}&&${this.appId}`
+        let SIGNATURE = utils.SHA256_Encrypt(s)
+        try {
+            let options = {
+                method: 'POST',
+                url: `${this.hostname}${host_data}`,
+                headers: {
+                    'X-SESSION-ID': `${this.ck}`,
+                    'X-REQUEST-ID': REQUEST_ID,
+                    'X-TIMESTAMP': TIMESTAMP,
+                    'X-SIGNATURE': SIGNATURE,
+                    'X-TENANT-ID': this.appId,
+                    'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
+                    'Cache-Control': 'no-cache',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Host: 'vapp.tmuyun.com',
+                    Connection: 'Keep-Alive',
+                },
+                form: { channel_article_id: articleId, content: txt }
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "评论");
+            //console.log(result);
+            if (result.code == 0) {
+                DoubleLog(`账号[${this.index}],评论成功[` + txt + `]`);
+            } else {
+                DoubleLog(`账号[${this.index}],评论:失败 ❌ 了呢,原因未知！`);
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async task_share(mumberType, name) { // 分享文章3/使用本地服务6
         let host_data = `/api/user_mumber/doTask`
         let REQUEST_ID = utils.guid();
@@ -324,9 +393,9 @@ class UserInfo {
 
 !(async () => {
     if (!(await checkEnv())) return;
-        if (userList.length > 0) {
-            await start();
-        }
+    if (userList.length > 0) {
+        await start();
+    }
     await SendMsg(msg);
 })()
     .catch((e) => console.log(e))
