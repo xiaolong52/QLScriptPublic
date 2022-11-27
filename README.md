@@ -5,7 +5,11 @@
 ql repo https://ghproxy.com/https://github.com/smallfawn/QLScriptPublic.git "wool" "demo|backup" "user_agents.js|utils.js"
 
 =====================
+# 单脚本拉库
+ql raw https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/脚本文件名.js
 
+ql raw https://ghproxy.com/https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/wool/utils.js
+# 单脚本拉库命令需要拉两个文件 缺一不可
 # 脚本模板
 https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/QLScriptPublic/main/demo/newV4.js
 
