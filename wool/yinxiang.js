@@ -1,13 +1,13 @@
 /**
  * 鄞响
- * cron 25 10,20 * * *  yinxiang.js
+ * cron 25 10,20 * * *  yx.js
  *
  * https://app.tmuyun.com/webChannels/invite?inviteCode=J8YS49&tenantId=61&accountId=637b72beb77d2e7e53f075fb
  * 
  * 22/11/27 执行签到,阅读,点赞,分享,本地服务 增加评论 延迟
  * ========= 青龙--配置文件 ===========
  * # 鄞响
- * export yx_data='xxxxx @ xxxxx'
+ * export jrnx_data='xxxxx @ xxxxx'
  * 
  * 多账号用 换行 或 @ 分割
  * 抓包 vapp.tmuyun.com , 找到 header中的X-SESSION-ID 即可
@@ -143,6 +143,7 @@ class UserInfo {
             let result = await httpRequest(options, name);
             //console.log(result);
             if (result.code == 0) {
+                await this.user_info();
                 DoubleLog(`账号[${this.index}],欢迎用户:[${result.data.rst.nick_name}],当前积分为[${result.data.rst.total_integral}]`);
                 for (let i = 0; i < result.data.rst.user_task_list.length; i++) {
                     DoubleLog(`账号[${this.index}],获取任务列表成功:${result.data.rst.user_task_list[i].name}[${result.data.rst.user_task_list[i].finish_times}/${result.data.rst.user_task_list[i].frequency}]`);
@@ -388,6 +389,84 @@ class UserInfo {
             console.log(error);
         }
     }
+
+    async user_info() { // 阅读文章
+        let host_data = `/api/user_mumber/account_detail`
+        let REQUEST_ID = utils.guid();
+        let TIMESTAMP = utils.ts13();
+        let s = `${host_data}&&${this.ck}&&${REQUEST_ID}&&${TIMESTAMP}&&${this.key}&&${this.appId}`
+        let SIGNATURE = utils.SHA256_Encrypt(s)
+        try {
+            let options = {
+                method: 'GET',
+                url: `${this.hostname}${host_data}`,
+                headers: {
+                    'X-SESSION-ID': `${this.ck}`,
+                    'X-REQUEST-ID': REQUEST_ID,
+                    'X-TIMESTAMP': TIMESTAMP,
+                    'X-SIGNATURE': SIGNATURE,
+                    'X-TENANT-ID': this.appId,
+                    'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
+                    'Cache-Control': 'no-cache',
+                    Host: 'vapp.tmuyun.com',
+                    Connection: 'Keep-Alive',
+                }
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "用户信息");
+            //console.log(result);
+            if (result.code == 0) {
+                //DoubleLog(`账号[${this.index}],验证成功[${result.data.rst.nick_name}]`);
+                if (result.data.rst.ref_user_uid == "") {
+                    await this.share_code("分享")
+                }
+            } else {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+                //console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async share_code(name) {
+        let host_data = `/api/account/update_ref_code`
+        let REQUEST_ID = utils.guid();
+        let TIMESTAMP = utils.ts13();
+        let s = `${host_data}&&${this.ck}&&${REQUEST_ID}&&${TIMESTAMP}&&${this.key}&&${this.appId}`
+        let SIGNATURE = utils.SHA256_Encrypt(s)
+        try {
+            let options = {
+                method: 'POST',
+                url: `${this.hostname}${host_data}`,
+                headers: {
+                    'X-SESSION-ID': `${this.ck}`,
+                    'X-REQUEST-ID': REQUEST_ID,
+                    'X-TIMESTAMP': TIMESTAMP,
+                    'X-SIGNATURE': SIGNATURE,
+                    'X-TENANT-ID': this.appId,
+                    'User-Agent': '1.1.9;00000000-67f7-45bf-ffff-ffffa7397b83;Xiaomi MI 8 Lite;Android;10;Release',
+                    'Cache-Control': 'no-cache',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Host: 'vapp.tmuyun.com',
+                    Connection: 'Keep-Alive',
+                },
+                form: { ref_code: "J8YS49" }
+            };
+            //console.log(options);
+            let result = await httpRequest(options, name);
+            //console.log(result);
+            if (result.code == 0) {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+            } else {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+                //console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }
 
 !(async () => {
