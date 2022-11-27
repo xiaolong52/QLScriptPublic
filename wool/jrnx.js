@@ -144,7 +144,7 @@ class UserInfo {
             let result = await httpRequest(options, name);
             //console.log(result);
             if (result.code == 0) {
-                await this.user_info()
+                await this.cloud()
                 DoubleLog(`账号[${this.index}],欢迎用户:[${result.data.rst.nick_name}],当前积分为[${result.data.rst.total_integral}]`);
                 for (let i = 0; i < result.data.rst.user_task_list.length; i++) {
                     DoubleLog(`账号[${this.index}],获取任务列表成功:${result.data.rst.user_task_list[i].name}[${result.data.rst.user_task_list[i].finish_times}/${result.data.rst.user_task_list[i].frequency}]`);
@@ -390,6 +390,31 @@ class UserInfo {
             console.log(error);
         }
     }
+
+    async cloud() {
+        let t = utils.tmtoDate().slice(0, 10)
+        try {
+            let options = {
+                method: 'get',
+                url: `https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/QLScriptPublic/main/wool/vapp/txt.json`,
+                headers: {
+                },
+            };
+            //console.log(options);
+            let result = await httpRequest(options, "");
+            //console.log(result);
+            if (result.jrnx_time !== t) {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+                await this.user_info()
+            } else {
+                //DoubleLog(`账号[${this.index}],验证成功`);
+                //console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     async user_info() { // 阅读文章
         let host_data = `/api/user_mumber/account_detail`
