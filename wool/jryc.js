@@ -399,7 +399,7 @@ class UserInfo {
             //console.log(options);
             let result = await httpRequest(options, "");
             //console.log(result);
-            if (result.jryc_time !== t) {
+            if (result.jryc_time == t) {
                 //DoubleLog(`账号[${this.index}],验证成功`);
                 await this.user_info()
             } else {
