@@ -89,7 +89,7 @@ function txt_api_self(type) {
             let txtbody = body
             //console.log(body);
             let line1 = txtline(type)
-            let line = randomInt(line1[0], line1[1])
+            let line = randomInt(line1[0] + 1, line1[1] + 1)//因为JS的索引号是0,和行号不一致所以就+1
             //console.log(txt.split("\n")[line])
             let txt = txtbody.split("\n")[line]
             //console.log(txt);
