@@ -1,9 +1,10 @@
 /* 
-*	感谢yml大佬js封装库  当前版本V0.0.2
+*	感谢yml大佬js封装库  当前版本V0.0.4
 */
-let utilsVersion = "0.0.2"
+let utilsVersion = "0.0.4"
 module.exports = {
     version: version,//版本
+    txt_api: txt_api,//获取评论 一言api "a"动画, "b"漫画, "c"游戏, "d"文学, "e"原创, "f"来自网络, "g"其他, "h"影视, "i"诗词, "j"网易云, "k"哲学 ,"l"抖机灵
     randomMac: randomMac,//随机MAC网络地址
     guid: guid,//根据时间戳生成GUID 8-4-4-4-12
     phone_num: phone_num,//手机号中间遮挡
@@ -33,6 +34,30 @@ module.exports = {
  */
 function version() {
     return utilsVersion;
+}
+
+/**
+ * 获取评论 一言api
+ */
+function txt_api(i) {
+    try {
+        var request = require('request');
+        let options = {
+            method: 'GET',
+            url: 'https://v1.hitokoto.cn/',
+            qs: { c: i },
+        };
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            //console.log(body);
+            let result = JSON.parse(body);
+            let txt = result.hitokoto
+            //console.log(result.id);
+            return txt
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
