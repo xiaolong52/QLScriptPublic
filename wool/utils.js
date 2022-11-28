@@ -59,12 +59,12 @@ function txt_api(i) {
                 let result = JSON.parse(body);
                 let txt = result.hitokoto
                 //console.log(result.id);
+                resolve(txt)
                 return txt
             });
         } catch (error) {
             console.log(error);
         }
-        resolve()
     })
 }
 
@@ -95,13 +95,12 @@ function txt_api_self_gitee(type) {
                 //console.log(Number(lineStar) -1, Number(lineEnd) -1);
                 //console.log(randomline);
                 //console.log(txt);
-
+                resolve(txt)
                 return txt
             });
         } catch (error) {
             console.log(error);
         }
-        resolve()
     })
 }
 
@@ -135,12 +134,12 @@ function txt_api_self_github(type) {
                 //console.log(txt.split("\n")[randomline])
                 let txt = txtbody.split("\n")[randomline]
                 //console.log(txt);
+                resolve(txt)
                 return txt
             });
         } catch (error) {
             console.log(error);
         }
-        resolve()
     })
 }
 
