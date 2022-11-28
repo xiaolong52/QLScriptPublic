@@ -84,11 +84,11 @@ function txt_api_self_gitee(type) {
             let lineArr = txtv.input.slice(3, 14)//截取行段文本
             let lineStar = lineArr.slice(1, 5)//首行
             let lineEnd = lineArr.slice(6, 10)//尾行
-            let randomline = randomInt(Number(lineStar) + 1, Number(lineEnd) + 1)//随机行 因为JS的索引号是0,和行号不一致所以就+1 
+            let randomline = randomInt(Number(lineStar) - 1, Number(lineEnd) - 1)//随机行 因为JS的索引号是0,和行号不一致所以就-1 检测行数比实际行数大1
             let txt = txtbody.split("\n")[randomline]
             //console.log(lineArr);
             //console.log(lineStar, lineEnd);
-            //console.log(Number(lineStar) + 1, Number(lineEnd) + 1);
+            //console.log(Number(lineStar) -1, Number(lineEnd) -1);
             //console.log(randomline);
             //console.log(txt);
             return txt
@@ -123,7 +123,7 @@ function txt_api_self_github(type) {
             let txtbody = body
             //console.log(body);
             let line = txtline(type)
-            let randomline = randomInt(line[0] + 1, line[1] + 1)//因为JS的索引号是0,和行号不一致所以就+1
+            let randomline = randomInt(line[0] - 1, line[1] - 1)//随机行 因为JS的索引号是0,和行号不一致所以就-1 检测行数比实际行数大1
             //console.log(txt.split("\n")[randomline])
             let txt = txtbody.split("\n")[randomline]
             //console.log(txt);
