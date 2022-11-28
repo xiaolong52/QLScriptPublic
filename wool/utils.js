@@ -82,7 +82,7 @@ function txt_api_self(type) {
         var request = require('request');
         let options = {
             method: 'GET',
-            url: 'https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/api/main/dog/index.txt',
+            url: 'https://gitee.com/smallfawn/api/raw/master/txt.txt',//https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/api/main/txt.txt
         };
         request(options, function (error, response, body) {
             if (error) throw new Error(error);
@@ -92,7 +92,7 @@ function txt_api_self(type) {
             let line = randomInt(line1[0], line1[1])
             //console.log(txt.split("\n")[line])
             let txt = txtbody.split("\n")[line]
-            console.log(txt);
+            //console.log(txt);
             return txt
         });
     } catch (error) {
