@@ -68,16 +68,6 @@ function txt_api(i) {
  * 获取随机文案 自建
  */
 function txt_api_self(type) {
-    function txtline(type) {
-        switch (type) {
-            case "gs": //古诗
-                return [2, 5]
-            case "dh": //动画
-                return [3, 8]
-            case "xq": //心情
-                return [3, 8]
-        }
-    }
     try {
         var request = require('request');
         let options = {
@@ -88,10 +78,17 @@ function txt_api_self(type) {
             if (error) throw new Error(error);
             let txtbody = body
             //console.log(body);
-            let line1 = txtline(type)
-            let line = randomInt(line1[0] + 1, line1[1] + 1)//因为JS的索引号是0,和行号不一致所以就+1
-            //console.log(txt.split("\n")[line])
-            let txt = txtbody.split("\n")[line]
+            let txtv = txtbody.match(type)
+            //console.log(txtv.input.slice(3, 14));
+            let lineArr = txtv.input.slice(3, 14)//截取行段文本
+            let lineStar = lineArr.slice(1, 5)//首行
+            let lineEnd = lineArr.slice(6, 10)//尾行
+            let randomline = randomInt(Number(lineStar) + 1, Number(lineEnd) + 1)//随机行 因为JS的索引号是0,和行号不一致所以就+1 
+            let txt = txtbody.split("\n")[randomline]
+            //console.log(lineArr);
+            //console.log(lineStar, lineEnd);
+            //console.log(Number(lineStar) + 1, Number(lineEnd) + 1);
+            //console.log(randomline);
             //console.log(txt);
             return txt
         });
