@@ -1,10 +1,14 @@
 /* 
 *	感谢yml大佬js封装库  当前版本V0.0.4
+*   22/11/21 随机生成GUID
+*   22/11/23 随机生成MAC网络地址
+*   22/11/28 随机一言 自建和其他
 */
 let utilsVersion = "0.0.4"
 module.exports = {
     version: version,//版本
-    txt_api: txt_api,//获取评论 一言api "a"动画, "b"漫画, "c"游戏, "d"文学, "e"原创, "f"来自网络, "g"其他, "h"影视, "i"诗词, "j"网易云, "k"哲学 ,"l"抖机灵
+    txt_api: txt_api,//获取随机文案 一言api // "a"动画, "b"漫画, "c"游戏, "d"文学, "e"原创, "f"来自网络, "g"其他, "h"影视, "i"诗词, "j"网易云, "k"哲学 ,"l"抖机灵
+    txt_api_self: txt_api_self,//获取随机文案 自建 // "gs"古诗, "dh"动画, "xq"心情 ······
     randomMac: randomMac,//随机MAC网络地址
     guid: guid,//根据时间戳生成GUID 8-4-4-4-12
     phone_num: phone_num,//手机号中间遮挡
@@ -37,7 +41,7 @@ function version() {
 }
 
 /**
- * 获取评论 一言api
+ * 获取随机文案 一言api
  */
 function txt_api(i) {
     try {
@@ -53,6 +57,42 @@ function txt_api(i) {
             let result = JSON.parse(body);
             let txt = result.hitokoto
             //console.log(result.id);
+            return txt
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+ * 获取随机文案 自建
+ */
+function txt_api_self(type) {
+    function txtline(type) {
+        switch (type) {
+            case "gs": //古诗
+                return [2, 5]
+            case "dh": //动画
+                return [3, 8]
+            case "xq": //心情
+                return [3, 8]
+        }
+    }
+    try {
+        var request = require('request');
+        let options = {
+            method: 'GET',
+            url: 'https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/api/main/dog/index.txt',
+        };
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            let txtbody = body
+            //console.log(body);
+            let line1 = txtline(type)
+            let line = randomInt(line1[0], line1[1])
+            //console.log(txt.split("\n")[line])
+            let txt = txtbody.split("\n")[line]
+            console.log(txt);
             return txt
         });
     } catch (error) {
